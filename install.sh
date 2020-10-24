@@ -1,3 +1,7 @@
+YEL='\033[1;33m'
+CYN='\033[1;36m' 
+NC='\033[0m'
+
 print_debug() {
 	  echo "$1"
   }
@@ -23,46 +27,57 @@ die() {
 	    exit ${2:-1}
     }
 
-echo "Updating packages..."
+echo "${CYN}Updating packages...${NC}"
 sudo apt-get -qq update -y
 
-echo "Cloning Dotfiles..."
-git clone https://github.com/cosmicc/dotfiles.git 1> /dev/null
+if [ ! -d "dotfiles" ]; then
+    echo "${CYN}Cloning Dotfiles...${NC}"
+    git clone https://github.com/cosmicc/dotfiles.git 1> /dev/null
+else
+    echo "${CYN}Updating Dotfiles...${NC}"
+    git pull dotfiles 1> /dev/null
+fi
 
-read -p "Install ZSH Shell (y/n)? " answer
+echo -n "${YEL}Install ZSH Shell (y/n)? ${NC}" 
+read answer
 if [ $answer = "y" ]; then
-    echo "Installing ZSH Shell..."
+    echo "${CYN}Installing ZSH Shell...${NC}"
     sudo apt-get -qq install zsh -y
 
-    echo "Installing oh-my-zsh"
+    echo "${CYN}Installing oh-my-zsh${NC}"
     wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O zmginstall.sh 1> /dev/null
     sh ./zmginstall.sh
     rm ./zmginstall.sh -f
 
     if [ ! -f "/etc/zsh/dircolors" ]; then
-        echo "Installing Directory Colors..."
+        echo "${CYN}Installing Directory Colors...${NC}"
         sudo cp dotfiles/LS_COLORS /etc/zsh/dircolors
         sudo echo 'test -r /etc/zsh/dircolors && eval "$(dircolors -b /etc/zsh/dircolors)" || eval "$(dircolors -b)"' >> /etc/zsh/zshrc
     fi
 
     if [ ! -f "/etc/zsh/promptline.sh" ]; then 
-        echo "Installing Promptline..."
+        echo "${CYN}Installing Promptline...${NC}"
         sudo cp dotfiles/promptline.sh /etc/zsh/promptline.sh
         echo "source /etc/zsh/promptline.sh" >> /etc/zsh/zshrc
     fi
 fi
 
-read -p "Install Essential System Packages (y/n)? " answer      
+echo -n "${YEL}Install Essential System Packages (y/n)? ${NC}"
+read answer
 if [ $answer = "y" ]; then 
-    sudo apt -qq install fonts-firacode fonts-noto git pipenv pax p7zip-rar apt-transport-https ca-certificates curl software-properties-common openvpn libssl-dev libffi-dev nfs-common -y
+    echo "${CYN}Installing Essential System Packages...${NC}"
+    sudo apt -qq install fonts-firacode fonts-noto git pipenv pax p7zip-rar apt-transport-https ca-certificates curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
 fi
 
-read -p "Install Essential Building Packages (y/n)? " answer      
+echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
+read answer
 if [ $answer = "y" ]; then 
+    echo "${CYN}Installing Essential Building Packages...${NC}"
     sudo apt -qq install build-essential make cmake -y
 fi
 
-read -p "Install VIM (y/n)? " answer      
+echo -n "Install VIM (y/n)? "
+read answer
 if [ $answer = "y" ]; then 
     echo "Installing VIM..."
     sudo apt-get -qq install vim -y
@@ -78,37 +93,43 @@ if [ $answer = "y" ]; then
     sudo vim +PluginInstall +qall 
 fi
 
-read -p "Install Python3 Libraries (y/n)? " answer      
+echo -n "Install Python3 Libraries (y/n)? "
+read answer
 if [ $answer = "y" ]; then 
     echo "Installing Python Libraries..."
     sudo apt-get -qq install python3-dev -y
     pip3 install loguru gitpython wpa-supplicant python-wifi rf-info 1> /dev/null
 fi
 
-read -p "Install Xubuntu-desktop (y/n)? " answer      
+echo -n "Install Xubuntu-desktop (y/n)? "
+read answer
 if [ $answer = "y" ]; then 
     sudo apt -qq install xubuntu-desktop -y
 fi    
 
-read -p "Install Desktop Apps (y/n)? " answer      
+echo -n "Install Desktop Apps (y/n)? "
+read answer
 if [ $answer = "y" ]; then 
     echo "Installing Xfce desktop apps..."
     sudo apt -qq install terminator notepadqq vlc -y
 fi    
 
-read -p "Remove Games (y/n)? " answer      
+echo -n "Remove Games (y/n)? "     
+read answer
 if [ $answer = "y" ]; then 
     echo "Removing Games..."
     sudo apt -qq remove sgt-puzzles ristretto *sudoko libgnome-games* gnome-mines -y
 fi
 
-read -p "Remove CUPS Printing (y/n)? " answer      
+echo -n "Remove CUPS Printing (y/n)? "
+read answer
 if [ $answer = "y" ]; then 
     echo "Removing CUPS Printing..."
     sudo apt -qq remove cups* -y
 fi    
 
-read -p "Remove LibreOffice (y/n)? " answer      
+echo -n "Remove LibreOffice (y/n)? "
+read answer
 if [ $answer = "y" ]; then 
     echo "Removing Libreoffice..."
     sudo apt -qq remove libreoffice* -y
