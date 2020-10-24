@@ -3,4 +3,4 @@ My OS configuration setup files.
 
 ## Installation
 
-    sh -c "$(curl -fsSL https://raw.github.com/cosmicc/dotfiles/master/install.sh)"
+    sh -c "$(wget https://raw.githubusercontent.com/cosmicc/dotfiles/master/install.sh)"
