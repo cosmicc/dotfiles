@@ -12,16 +12,15 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'edkolev/promptline.vim'
+Plugin 'edkolev/promptline.vim'
 Plugin 'w0rp/ale'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
-"Plugin 'fisadev/vim-isort'
+Plugin 'fisadev/vim-isort'
 "Plugin 'scrooloose/nerdtree'
 "Plugin 'tmhedberg/SimpylFold'
-Plugin 'colors/sublimemonokai.vim'
 "Bundle 'Valloric/YouCompleteMe'
 call vundle#end()
 filetype plugin on
@@ -66,11 +65,11 @@ nmap <silent> <A-Up> :wincmd k<CR>
 nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
-"python3 << EOF
-"import os
-"import sys
-"if 'VIRTUAL_ENV' in os.environ:
-"  project_base_dir = os.environ['VIRTUAL_ENV']
-"  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-"  execfile(activate_this, dict(__file__=activate_this))
-"EOF
+python3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
