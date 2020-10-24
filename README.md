@@ -1,2 +1,6 @@
-# dotfiles
-OS configuration setup &amp; dotfiles
+
+My OS configuration setup files.
+
+## Installation
+
+    sh -c "$(curl -fsSL https://raw.github.com/cosmicc/dotfiles/master/install.sh)"
