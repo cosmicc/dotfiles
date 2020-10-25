@@ -26,6 +26,22 @@ die() {
 	  echo $1
 	    exit ${2:-1}
     }
+    
+swapon -s    
+echo -n "${YEL}Configure Swap Space (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    echo "${CYN}Creating A Swapfile ...${NC}"
+    sudo fallocate -l 4G /swapfile
+    sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    echo "${CYN}Activating Swapfile ...${NC}"
+    sudo swapon /swapfile
+    sudo sysctl vm.swappiness=10
+    sudo sh -c 'echo "vm.swappiness=10" >> /etc/sysctl.conf'
+    sudo sh -c 'echo "/swapfile swap swap defaults 0 0" >> /etc/fstab'
+fi
 
 echo -n "${YEL}Add New Admin User (y/n)? ${NC}" 
 read answer
