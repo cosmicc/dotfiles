@@ -27,8 +27,13 @@ if [ $answer = "y" ]; then
 
     echo "${CYN}Installing oh-my-zsh${NC}"
     wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O zmginstall.sh 1> /dev/null
-    sh ./zmginstall.sh
+    echo "${YEL}TYPE EXIT AFTER OMZSH INSTALL TO CONTINUE${NC}"
+    ./zmginstall.sh
     rm ./zmginstall.sh -f
+    
+    if [ ! -f "/etc/zsh/zshrc"]; then
+        sudo cp ~/.zshrc /etc/zsh/zshrc
+    fi
 
     if [ ! -f "/etc/zsh/dircolors" ]; then
         echo "${CYN}Installing Directory Colors...${NC}"
@@ -39,7 +44,7 @@ if [ $answer = "y" ]; then
     if [ ! -f "/etc/zsh/promptline.sh" ]; then 
         echo "${CYN}Installing Promptline...${NC}"
         sudo cp dotfiles/promptline.sh /etc/zsh/promptline.sh
-        echo "source /etc/zsh/promptline.sh" >> /etc/zsh/zshrc
+        sudo echo "source /etc/zsh/promptline.sh" >> /etc/zsh/zshrc
     fi
 fi
 
