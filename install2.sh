@@ -13,6 +13,9 @@ if [ $answer = "y" ]; then
     ssh-add ~/.ssh/id_rsa
 fi
 
+echo "${CYN}Installing git...${NC}"
+sudo apt -qq install git -y
+
 if [ ! -d "dotfiles" ]; then
     echo "${CYN}Cloning Dotfiles...${NC}"
     git clone https://github.com/cosmicc/dotfiles.git 1> /dev/null
