@@ -16,7 +16,7 @@ else
     git pull dotfiles 1> /dev/null
 fi
 
-source dotfiles/helper.sh
+source ~/dotfiles/helper.sh
 
 echo "${CYN}Updating packages...${NC}"
 spinner
