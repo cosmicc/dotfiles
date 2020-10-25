@@ -36,7 +36,7 @@ if [ $answer = "y" ]; then
     sh ./zmginstall.sh
     rm ./zmginstall.sh -f
     
-    if [ ! -f "/etc/zsh/zshrc"]; then
+    if [ ! -f "/etc/zsh/zshrc" ]; then
         sudo cp ~/.zshrc /etc/zsh/zshrc
     fi
 
