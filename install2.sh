@@ -14,14 +14,16 @@ if [ $answer = "y" ]; then
 fi
 
 echo "${CYN}Installing git...${NC}"
-sudo apt -qq install git git-gui -y
+sudo apt -qq install git -y
 
 if [ ! -d "dotfiles" ]; then
     echo "${CYN}Cloning Dotfiles...${NC}"
     git clone https://github.com/cosmicc/dotfiles.git 1> /dev/null
 else
     echo "${CYN}Updating Dotfiles...${NC}"
-    git pull dotfiles 1> /dev/null
+    cd dotfiles
+    git pull 1> /dev/null
+    cd ~
 fi
 
 echo "${CYN}Updating packages...${NC}"
@@ -60,7 +62,7 @@ echo -n "${YEL}Install Essential System Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential System Packages...${NC}"
-    sudo apt -qq install pipenv neofetch pax p7zip-rar apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
+    sudo apt -qq install pipenv neofetch pax p7zip-rar lmsensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
 fi
 
 echo -n "${YEL}Install Moified Rpi config.txt (y/n)? ${NC}"
