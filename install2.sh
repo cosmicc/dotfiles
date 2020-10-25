@@ -2,7 +2,7 @@ echo -n "${YEL}Generate RSA Keys (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then    
     echo "${CYN}Generating RSA Keys...${NC}"
-    ssh-keygen -t rsa 4096
+    ssh-keygen -t rsa -b 4096
     cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
     eval $(ssh-agent -s)
     ssh-add ~/.ssh/id_rsa
