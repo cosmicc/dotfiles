@@ -43,7 +43,7 @@ if [ $answer = "y" ]; then
     if [ ! -f "/etc/zsh/dircolors" ]; then
         echo "${CYN}Installing Directory Colors...${NC}"
         sudo cp dotfiles/LS_COLORS /etc/zsh/dircolors
-        sudo sh -c 'echo eval "$(dircolors -b /etc/zsh/dircolors)" >> /etc/zsh/zshrc'
+        sudo sh -c 'echo "test -r /etc/zsh/dircolors && eval \"\$(dircolors -b /etc/zsh/dircolors)\" || eval \"\$(dircolors -b)]\"" >> /etc/zsh/zshrc'
     fi
 
     if [ ! -f "/etc/zsh/promptline.sh" ]; then 
