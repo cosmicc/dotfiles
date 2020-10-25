@@ -27,6 +27,22 @@ die() {
 	    exit ${2:-1}
     }
 
+echo -n "${YEL}Add New Admin User (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    echo "${CYN}Adding New User...${NC}"
+    echo -n "${YEL}Type new username: ${NC}"; read username
+    sudo adduser $username
+    sudo usermod -aG sudo $username
+    sudo su $username
+    cd ~
+    echo "${CYN}Generating RSA Keys...${NC}"
+    ssh-keygen -t rsa 4096
+    cat /home/$username/.ssh/id_rsa.pub >> /home/$username/.ssh/authorized_keys
+    eval $(ssh-agent -s)
+    ssh-add ~/.ssh/id_rsa
+fi
+
 if [ ! -d "dotfiles" ]; then
     echo "${CYN}Cloning Dotfiles...${NC}"
     git clone https://github.com/cosmicc/dotfiles.git 1> /dev/null
@@ -38,6 +54,7 @@ fi
 source dotfiles/helper.sh
 
 echo "${CYN}Updating packages...${NC}"
+spinner
 sudo apt-get -qq update -y
 
 echo -n "${YEL}Install ZSH Shell (y/n)? ${NC}" 
@@ -106,7 +123,8 @@ fi
 echo -n "Install Xubuntu-desktop (y/n)? "
 read answer
 if [ $answer = "y" ]; then 
-    sudo apt -qq install xubuntu-desktop -y
+    sudo apt -qq install xubuntu-core^ slick-greeter -y
+    echo "[SeatDefaults]\ngreeter-session=slick-greeter\n" > /etc/lightdm/lightdm.conf
 fi    
 
 echo -n "Install Desktop Apps (y/n)? "
@@ -116,10 +134,9 @@ if [ $answer = "y" ]; then
     sudo apt -qq install terminator notepadqq vlc -y
 fi    
 
-echo -n "Remove Games (y/n)? "     
+echo -n "Remove Games (y/n)? "
 read answer
 if [ $answer = "y" ]; then 
-    echo "Removing Games..."
     sudo apt -qq remove sgt-puzzles ristretto *sudoko libgnome-games* gnome-mines -y
 fi
 
@@ -142,4 +159,8 @@ sudo apt -qq full-upgrade -y
 
 echo "Removing un-needed packages..."
 sudo apt -qq  autoremove -y
+
+YEL='\033[1;33m'
+CYN='\033[1;36m' 
+NC='\033[0m'
 
