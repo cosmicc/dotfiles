@@ -64,13 +64,13 @@ echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential Building Packages...${NC}"
-    sudo apt -qq install build-essential make cmake -y
+    sudo apt -qq install build-essential make cmake gcc -y
 fi
 
-echo -n "Install VIM (y/n)? "
+echo -n "${YEL}Install VIM (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
-    echo "Installing VIM..."
+    echo "${CYN}Installing VIM...${NC}"
     sudo apt-get -qq install vim -y
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim 1> /dev/null
     sudo git clone https://github.com/VundleVim/Vundle.vim.git /root/.vim/bundle/Vundle.vim 1> /dev/null
@@ -84,27 +84,23 @@ if [ $answer = "y" ]; then
     sudo vim +PluginInstall +qall 
 fi
 
-echo -n "Install Python3 Libraries (y/n)? "
+echo -n "${YEL}Install Python3 Libraries (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
-    echo "Installing Python Libraries..."
+    echo "${CYN}Installing Python Libraries...${NC}"
     sudo apt-get -qq install python3-dev -y
     pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 1> /dev/null
 fi
 
-echo -n "Install Xubuntu-desktop (y/n)? "
+echo -n "${YEL}Install Xubuntu-desktop (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
-    sudo apt -qq install xubuntu-core^ slick-greeter -y
-    sudo echo "[SeatDefaults]\ngreeter-session=slick-greeter\n" > /etc/lightdm/lightdm.conf
-fi    
-
-echo -n "Install Desktop Apps (y/n)? "
-read answer
-if [ $answer = "y" ]; then 
-    echo "Installing Xfce desktop apps..."
-    sudo apt -qq install terminator notepadqq vlc -y
-fi    
+    echo "${CYN}Installing Xubuntu-desktop...${NC}"
+    sudo apt -qq install xubuntu-core^ slick-greeter libpam-kwallet4 libpam-kwallet5 -y
+    sudo sh -c 'echo "[SeatDefaults]\ngreeter-session=slick-greeter\n" > /etc/lightdm/lightdm.conf'
+    echo "${CYN}Installing Xubuntu-desktop Apps...${NC}"
+    sudo apt -qq install app-install-data-partner apport-gtk blueman bluez catfish desktop-file-utils evince espeak file-roller firefox fwupd fwupdate gigolo gnome-calculator gnome-software gnome-system-tools indicator-application indicator-messages indicator-sound inxi libnotify-bin libnss-mdns libpam-gnome-keyring libxfce4ui-utils light-locker lightdm-gtk-greeter-settings menulibre network-manager-gnome onboard pavucontrol ristretto software-properties-gtk speech-dispatcher thunar-archive-plugin thunar-media-tags-plugin transmission-gtk ttf-ubuntu-font-family update-notifier xcursor-themes xfce4-cpugraph-plugin xfce4-dict xfce4-indicator-plugin xfce4-netload-plugin xfce4-places-plugin xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal xfce4-verve-plugin xfce4-whiskermenu-plugin xfpanel-switch xul-ext-ubufox terminator notepadqq vlc -y
+fi
 
 echo -n "Remove Games (y/n)? "
 read answer
