@@ -60,6 +60,14 @@ if [ $answer = "y" ]; then
     sudo apt -qq install fonts-firacode fonts-noto git gcc-aarch64-linux-gnu g++-aarch64-linux-gnu pipenv neofetch gparted pax p7zip-rar apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
 fi
 
+echo -n "${YEL}Install Moified Rpi config.txt (y/n)? ${NC}"
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing Modified Rpi config.txt...${NC}"
+    sudo cp dotfiles/templates/rpi-config.txt /boot/firmware/config.txt -f
+fi
+
+
 echo -n "${YEL}Install 64bit Rpi Userland (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
@@ -116,7 +124,7 @@ if [ $answer = "y" ]; then
     echo "${CYN}Installing Xubuntu-desktop Apps...${NC}"
     sudo apt -qq install app-install-data-partner chromium-browser mugshot blueman bluez catfish desktop-file-utils evince espeak file-roller firefox fwupd fwupdate gigolo gnome-calculator gnome-software gnome-system-tools indicator-application indicator-messages indicator-sound inxi libnotify-bin libnss-mdns libpam-gnome-keyring libxfce4ui-utils light-locker lightdm-gtk-greeter-settings menulibre network-manager-gnome onboard pavucontrol ristretto software-properties-gtk speech-dispatcher thunar-archive-plugin thunar-media-tags-plugin transmission-gtk ttf-ubuntu-font-family update-notifier xcursor-themes xfce4-cpugraph-plugin xfce4-dict xfce4-indicator-plugin xfce4-netload-plugin xfce4-places-plugin xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal xfce4-verve-plugin xfce4-whiskermenu-plugin xfpanel-switch xul-ext-ubufox terminator notepadqq vlc -y
     echo "${CYN}Restoring Xfce Settings...${NC}"
-    tar xvfz dotfiles/settings.tar.gz -C ~/.config/xfce4/xfconf/xfce-perchannel-xml
+    tar xvfz dotfiles/templates/settings.tar.gz -C ~/.config/xfce4/xfconf/xfce-perchannel-xml
 fi
 
 echo -n "Remove Games (y/n)? "

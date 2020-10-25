@@ -47,8 +47,8 @@ iptables -A OUTPUT -m state --state INVALID -j DROP
 ### Drop Spoofing attacks
 iptables -A INPUT -s 10.0.0.0/8 -j DROP
 iptables -A INPUT -s 169.254.0.0/16 -j DROP
-iptables -A INPUT -s 172.16.0.0/12 -j DROP
-iptables -A INPUT -s 127.0.0.0/8 -j DROP
+#iptables -A INPUT -s 172.16.0.0/12 -j DROP
+#iptables -A INPUT -s 127.0.0.0/8 -j DROP
 iptables -A INPUT -s 192.168.0.0/24 -j DROP
 iptables -A INPUT -s 224.0.0.0/4 -j DROP
 iptables -A INPUT -d 224.0.0.0/4 -j DROP
@@ -84,7 +84,7 @@ iptables -A INPUT -p tcp --dport 8090 -m limit --limit 25/minute --limit-burst 1
 
 # ssh & sftp
 iptables -A INPUT -p tcp --dport 372 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -p tcp --dport 375 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
+iptables -A INPUT -p tcp --dport 372 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
 
 # Ping
 iptables -A INPUT -p icmp --icmp-type 0 -j ACCEPT

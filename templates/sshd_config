@@ -20,7 +20,7 @@ IgnoreRhosts yes
 HostbasedAuthentication no
 PermitEmptyPasswords no
 ChallengeResponseAuthentication no
-PasswordAuthentication no
+PasswordAuthentication yes
 X11Forwarding no
 AllowTcpForwarding no
 AllowAgentForwarding no

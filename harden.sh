@@ -22,7 +22,10 @@ echo "install rds /bin/true" >> /etc/modprobe.d/CIS.conf
 echo "install tipc /bin/true" >> /etc/modprobe.d/CIS.conf
 
 echo "${CYN}Securing SSH...${NC}"
-sed s/USERNAME/$USER/g templates/sshd_config > /etc/ssh/sshd_config; echo "OK"
+sudo chmod o+w /etc/ssh
+sed s/USERNAME/$USER/g templates/sshd_config > /etc/ssh/sshd_config
+sudo chown root.root /etc/ssh/sshd_config
+sudo chmod o-w /etc/ssh
 chattr -i /home/$USER/.ssh/authorized_keys
 sudo service ssh restart
 
@@ -85,7 +88,7 @@ sudo touch /var/log/wtmp
 
 echo "${CYN}Installing Auditd...${NC}"
 sudo apt -qq install auditd -y
-sudo cp templates/audit-CIS.rules /etc/audit/rules.d/audit.rules
+sudo cp templates/audit.rules /etc/audit/rules.d/audit.rules
 sudo find / -xdev \( -perm -4000 -o -perm -2000 \) -type f | awk '{print \
 "-a always,exit -F path=" $1 " -F perm=x -F auid>=1000 -F auid!=4294967295 \
 -k privileged" } ' >> /etc/audit/rules.d/audit.rules
