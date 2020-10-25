@@ -57,7 +57,7 @@ echo -n "${YEL}Install Essential System Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential System Packages...${NC}"
-    sudo apt -qq install fonts-firacode fonts-noto git pipenv pax p7zip-rar apt-transport-https ca-certificates curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
+    sudo apt -qq install fonts-firacode fonts-noto git pipenv pax p7zip-rar apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
 fi
 
 echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
@@ -89,14 +89,14 @@ read answer
 if [ $answer = "y" ]; then 
     echo "Installing Python Libraries..."
     sudo apt-get -qq install python3-dev -y
-    pip3 install loguru gitpython wpa-supplicant python-wifi rf-info 1> /dev/null
+    pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 1> /dev/null
 fi
 
 echo -n "Install Xubuntu-desktop (y/n)? "
 read answer
 if [ $answer = "y" ]; then 
     sudo apt -qq install xubuntu-core^ slick-greeter -y
-    echo "[SeatDefaults]\ngreeter-session=slick-greeter\n" > /etc/lightdm/lightdm.conf
+    sudo echo "[SeatDefaults]\ngreeter-session=slick-greeter\n" > /etc/lightdm/lightdm.conf
 fi    
 
 echo -n "Install Desktop Apps (y/n)? "
