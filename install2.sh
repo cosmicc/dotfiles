@@ -57,7 +57,22 @@ echo -n "${YEL}Install Essential System Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential System Packages...${NC}"
-    sudo apt -qq install fonts-firacode fonts-noto git pipenv pax p7zip-rar apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
+    sudo apt -qq install fonts-firacode fonts-noto git gcc-aarch64-linux-gnu g++-aarch64-linux-gnu pipenv neofetch gparted pax p7zip-rar apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
+fi
+
+echo -n "${YEL}Install 64bit Rpi Userland (y/n)? ${NC}"
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing 64bit Rpi Userland...${NC}"
+    sudo git clone https://github.com/raspberrypi/userland.git /opt/build/userland
+    cd /opt/build/userland
+    sudo mkdir build && cd build
+    sudo sh -c "cmake -DCMAKE_BUILD_TYPE=Release -DARM64=ON ../"
+    sudo sh -c "make -j4"
+    sudo sh -c "make install"
+    sudo cp -rfp /opt/vc/* /usr
+    cd ~
+    sudo apt -qq install rpi-eeprom wiringpi -y
 fi
 
 echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
@@ -129,8 +144,3 @@ sudo apt -qq full-upgrade -y
 
 echo "Removing un-needed packages..."
 sudo apt -qq  autoremove -y
-
-YEL='\033[1;33m'
-CYN='\033[1;36m' 
-NC='\033[0m'
-
