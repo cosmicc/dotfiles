@@ -27,9 +27,6 @@ die() {
 	    exit ${2:-1}
     }
 
-echo "${CYN}Updating packages...${NC}"
-sudo apt-get -qq update -y
-
 if [ ! -d "dotfiles" ]; then
     echo "${CYN}Cloning Dotfiles...${NC}"
     git clone https://github.com/cosmicc/dotfiles.git 1> /dev/null
@@ -37,6 +34,11 @@ else
     echo "${CYN}Updating Dotfiles...${NC}"
     git pull dotfiles 1> /dev/null
 fi
+
+source dotfiles/helper.sh
+
+echo "${CYN}Updating packages...${NC}"
+sudo apt-get -qq update -y
 
 echo -n "${YEL}Install ZSH Shell (y/n)? ${NC}" 
 read answer
