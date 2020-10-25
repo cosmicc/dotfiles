@@ -16,10 +16,7 @@ else
     git pull dotfiles 1> /dev/null
 fi
 
-source ~/dotfiles/helper.sh
-
 echo "${CYN}Updating packages...${NC}"
-spinner
 sudo apt-get -qq update -y
 
 echo -n "${YEL}Install ZSH Shell (y/n)? ${NC}" 
