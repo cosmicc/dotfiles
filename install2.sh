@@ -33,8 +33,7 @@ if [ $answer = "y" ]; then
     echo "${CYN}Installing oh-my-zsh${NC}"
     wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O zmginstall.sh 1> /dev/null
     echo "${YEL}TYPE EXIT AFTER OMZSH INSTALL TO CONTINUE${NC}"
-    chmod ugo+x zmginstall.sh
-    ./zmginstall.sh
+    sh ./zmginstall.sh
     rm ./zmginstall.sh -f
     
     if [ ! -f "/etc/zsh/zshrc"]; then
