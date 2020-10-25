@@ -14,7 +14,7 @@ if [ $answer = "y" ]; then
 fi
 
 echo "${CYN}Installing git...${NC}"
-sudo apt -qq install git -y
+sudo apt -qq install git git-gui -y
 
 if [ ! -d "dotfiles" ]; then
     echo "${CYN}Cloning Dotfiles...${NC}"
@@ -60,7 +60,7 @@ echo -n "${YEL}Install Essential System Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential System Packages...${NC}"
-    sudo apt -qq install fonts-firacode fonts-noto git gcc-aarch64-linux-gnu g++-aarch64-linux-gnu pipenv neofetch gparted pax p7zip-rar apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
+    sudo apt -qq install pipenv neofetch pax p7zip-rar apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
 fi
 
 echo -n "${YEL}Install Moified Rpi config.txt (y/n)? ${NC}"
@@ -90,7 +90,7 @@ echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential Building Packages...${NC}"
-    sudo apt -qq install build-essential make cmake gcc -y
+     sudo apt -qq install build-essential make cmake automake gcc-aarch64-linux-gnu g++-aarch64-linux-gnu gcc -y
 fi
 
 echo -n "${YEL}Install VIM (y/n)? ${NC}"
@@ -125,7 +125,7 @@ if [ $answer = "y" ]; then
     sudo apt -qq install xubuntu-core^ slick-greeter libpam-kwallet4 libpam-kwallet5 -y
     sudo sh -c 'echo "[SeatDefaults]\ngreeter-session=slick-greeter\n" > /etc/lightdm/lightdm.conf'
     echo "${CYN}Installing Xubuntu-desktop Apps...${NC}"
-    sudo apt -qq install app-install-data-partner chromium-browser mugshot blueman bluez catfish desktop-file-utils evince espeak file-roller firefox fwupd fwupdate gigolo gnome-calculator gnome-software gnome-system-tools indicator-application indicator-messages indicator-sound inxi libnotify-bin libnss-mdns libpam-gnome-keyring libxfce4ui-utils light-locker lightdm-gtk-greeter-settings menulibre network-manager-gnome onboard pavucontrol ristretto software-properties-gtk speech-dispatcher thunar-archive-plugin thunar-media-tags-plugin transmission-gtk ttf-ubuntu-font-family update-notifier xcursor-themes xfce4-cpugraph-plugin xfce4-dict xfce4-indicator-plugin xfce4-netload-plugin xfce4-places-plugin xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal xfce4-verve-plugin xfce4-whiskermenu-plugin xfpanel-switch xul-ext-ubufox terminator notepadqq vlc -y
+    sudo apt -qq install app-install-data-partner gparted fonts-firacode fonts-noto chromium-browser mugshot blueman bluez catfish desktop-file-utils evince espeak file-roller firefox fwupd fwupdate gigolo gnome-calculator gnome-software gnome-system-tools indicator-application indicator-messages indicator-sound inxi libnotify-bin libnss-mdns libpam-gnome-keyring libxfce4ui-utils light-locker lightdm-gtk-greeter-settings menulibre network-manager-gnome onboard pavucontrol ristretto software-properties-gtk speech-dispatcher thunar-archive-plugin thunar-media-tags-plugin transmission-gtk ttf-ubuntu-font-family update-notifier xcursor-themes xfce4-cpugraph-plugin xfce4-dict xfce4-indicator-plugin xfce4-netload-plugin xfce4-places-plugin xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal xfce4-verve-plugin xfce4-whiskermenu-plugin xfpanel-switch xul-ext-ubufox terminator notepadqq vlc -y
     echo "${CYN}Restoring Xfce Settings...${NC}"
     tar xvfz dotfiles/templates/settings.tar.gz -C ~/.config/xfce4/xfconf/xfce-perchannel-xml
 fi
