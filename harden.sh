@@ -33,7 +33,7 @@ sudo chmod +x /etc/init.d/iptables.sh
 sudo ln -s /etc/init.d/iptables.sh /etc/rc2.d/S99iptables.sh
 
 echo "${CYN}Installing Fail2Ban...${NC}"
-sudo apt -qq install fail2ban
+sudo apt -qq install fail2ban -y
 # sed s/MAILTO/$inbox/g templates/fail2ban > /etc/fail2ban/jail.local
 sudo cp /etc/fail2ban/jail.local /etc/fail2ban/jail.conf
 /etc/init.d/fail2ban restart
@@ -80,11 +80,11 @@ sudo psad --sig-update
 sudo service psad restart
 
 echo "${CYN}Installing Process Accounting...${NC}"
-sudo apt -qq install acct
+sudo apt -qq install acct -y
 sudo touch /var/log/wtmp
 
 echo "${CYN}Installing Auditd...${NC}"
-sudo apt -qq install auditd
+sudo apt -qq install auditd -y
 sudo cp templates/audit-CIS.rules /etc/audit/rules.d/audit.rules
 sudo find / -xdev \( -perm -4000 -o -perm -2000 \) -type f | awk '{print \
 "-a always,exit -F path=" $1 " -F perm=x -F auid>=1000 -F auid!=4294967295 \
@@ -92,8 +92,8 @@ sudo find / -xdev \( -perm -4000 -o -perm -2000 \) -type f | awk '{print \
 sudo echo " " >> /etc/audit/rules.d/audit.rules
 sudo echo "#End of Audit Rules" >> /etc/audit/rules.d/audit.rules
 sudo echo "-e 2" >>/etc/audit/rules.d/audit.rules
-systemctl enable auditd.service
-service auditd restart
+sudo systemctl enable auditd.service
+sudo service auditd restart
 
 echo "${CYN}Installing Sysstat...${NC}"
 sudo apt -qq install sysstat -y
