@@ -5,6 +5,15 @@ NC='\033[0m'
 
 sudo chown $USERNAME.$USERNAME /opt -R
 
+echo -n "${YEL}Remove an old user (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    echo -n "${YEL}Username of user to remove? ${NC}"
+    read delusername
+    sudo deluser --remove-home $delusername
+    echo "${CYN}User $delusername was removed${NC}"
+fi
+
 echo -n "${YEL}Generate RSA Keys (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then    
