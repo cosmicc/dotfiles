@@ -94,9 +94,9 @@ sudo cp templates/audit.rules /etc/audit/rules.d/audit.rules
 sudo find / -xdev \( -perm -4000 -o -perm -2000 \) -type f | awk '{print \
 "-a always,exit -F path=" $1 " -F perm=x -F auid>=1000 -F auid!=4294967295 \
 -k privileged" } ' >> /etc/audit/rules.d/audit.rules
-sudo echo " " >> /etc/audit/rules.d/audit.rules
-sudo echo "#End of Audit Rules" >> /etc/audit/rules.d/audit.rules
-sudo echo "-e 2" >>/etc/audit/rules.d/audit.rules
+sudo sh -c 'echo " " >> /etc/audit/rules.d/audit.rules'
+sudo sh -c 'echo "#End of Audit Rules" >> /etc/audit/rules.d/audit.rules'
+sudo sh -c 'echo "-e 2" >> /etc/audit/rules.d/audit.rules'
 sudo systemctl enable auditd.service
 sudo service auditd restart
 
@@ -133,3 +133,6 @@ sudo chmod 600 /etc/gshadow-
 echo -e "Setting Sticky bit on all world-writable directories"
 sleep 2
 sudo df --local -P | sudo awk {'if (NR!=1) print $6'} | sudo xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | sudo xargs chmod a+t
+
+echo "${CYN}Removing Unused Packages...${NC}"
+sudo apt -qq autoremove -y
