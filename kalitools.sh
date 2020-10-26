@@ -15,7 +15,7 @@ if [ $answer = "y" ]; then
     echo "${CYN}Installing Tools Prerequisites...${NC}" 
     sudo apt -qq install python3-scapy subversion python3-pyqt5 pyqt5-dev-tools qttools5-dev-tools -y
 
-    echo -n "${YEL}Install Kali Repository (y/n)? ${NC}" 
+    echo -n "${YEL}Install Kali Tools (y/n)? ${NC}" 
     read answerb
     if [ $answerb = "y" ]; then
         echo "${CYN}Installing All Kali Tools...${NC}" 
