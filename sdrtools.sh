@@ -3,7 +3,7 @@ CYN='\033[1;36m'
 NC='\033[0m'
 
 echo "${CYN}Installing Prerequisites...${NC}"
-sudo apt -qq install libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev -y
+sudo apt -qq install libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libqt5xmlpatterns5-private-dev -y
 
 echo "${CYN}Installing Chirp...${NC}"
 sudo apt -qq install chirp -y
@@ -140,13 +140,33 @@ if [ $answer = "y" ]; then
     make -j4
     sudo make install
     cd /opt/build/radio-tools
+fi
 
+echo -n "${YEL}Download, Compile & Install JS8Call (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then 
     echo "${CYN}Installing JS8Call...${NC}"
     cd /opt/build/radio-tools
     git clone https://widefido@bitbucket.org/widefido/js8ca/usr/lib/aarch64-linux-gnull.git
     mkdir build
     cd build
-    cmake -Dhamlib_LIBRARY_DIRS=/usr/lib/aarch64-linux-gnu ../
+    cmake -Dhamlib_LIBRARY_DIRS=/usr/lib/aarch64-linux-gnu -DJS8_USE_HAMLIB_THREE=1 ../
+    make
+fi
+
+echo -n "${YEL}Download, Compile & Install GQRX (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing GQRX...${NC}"
+    cd /opt/build/radio-tools
+    wget https://github.com/csete/gqrx/releases/download/v2.11.5/gqrx-sdr-2.11.5-src.tar.xz
+    xz --decompress gqrx*.xz
+    tar xvf gqrx*.tar
+    rm gqrx*.tar
+    cd gqrx*
+    mkdir build
+    cd build
+    cmake ../
 fi
 
 
