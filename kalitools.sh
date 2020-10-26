@@ -25,7 +25,8 @@ fi
 
 echo "${CYN}Installing MAC and Hostname Changer...${NC}"
 sudo apt -qq install macchanger -y
-sudo cp dotfiles/templates/hostnamechanger* /usr/local/bin
+sudo cp dotfiles/templates/hostnamechanger /usr/local/bin
+sudo cp dotfiles/templates/hostnamechanger.py /usr/local/bin
 sudo ln -s /usr/local/bin/hostnamechanger /etc/network/if-pre-up.d/hostnamechanger
 sudo chmod ugo+x /usr/local/bin/hostnamechanger
 sudo chmod ugo+x /etc/network/if-pre-up.d/hostnamechanger
@@ -36,9 +37,9 @@ sudo apt -qq install wifite -y
 echo "${CYN}Installing bing-ip2hosts...${NC}" 
 wget http://www.morningstarsecurity.com/downloads/bing-ip2hosts-0.4.tar.gz
 tar -xzvf bing-ip2hosts-0.4.tar.gz
-cp bing-ip2hosts-0.4/bing-ip2hosts /usr/local/bin/
-rm -r bing-ip2hosts-0.4
-rm bing-ip2hosts-0.4.tar.gz
+sudo cp bing-ip2hosts-0.4/bing-ip2hosts /usr/local/bin/
+sudo rm -r bing-ip2hosts-0.4
+sudo rm bing-ip2hosts-0.4.tar.gz
 
 echo "${CYN}Installing Lazy Air Crack...${NC}" 
 git clone https://github.com/3xploitGuy/lazyaircrack.git /opt/build/wifi-tools/lazyaircrack 1> /dev/null
