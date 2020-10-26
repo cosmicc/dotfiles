@@ -7,19 +7,19 @@ echo "${CYN}Setting Restrictive UMASK...${NC}"
 sudo cp templates/login.defs /etc/login.defs
 
 echo "${CYN}Disabling Unused Filesystems...${NC}"
-sudo echo "install cramfs /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install freevxfs /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install jffs2 /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install hfs /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install hfsplus /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install squashfs /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install udf /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo sh -c 'echo "install cramfs /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install freevxfs /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install jffs2 /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install hfs /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install hfsplus /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install squashfs /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install udf /bin/true" >> /etc/modprobe.d/CIS.conf'
 
 echo "${CYN}Disabling Unused Net Protocols...${NC}"
-sudo echo "install dccp /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install sctp /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install rds /bin/true" >> /etc/modprobe.d/CIS.conf
-sudo echo "install tipc /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo sh -c 'echo "install dccp /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install sctp /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install rds /bin/true" >> /etc/modprobe.d/CIS.conf'
+sudo sh -c 'echo "install tipc /bin/true" >> /etc/modprobe.d/CIS.conf'
 
 echo "${CYN}Securing SSH...${NC}"
 sudo chmod o+w /etc/ssh
