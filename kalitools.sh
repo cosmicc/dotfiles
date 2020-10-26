@@ -30,6 +30,7 @@ sudo cp templates/hostnamechanger.py /usr/local/bin
 sudo ln -s /usr/local/bin/hostnamechanger /etc/network/if-pre-up.d/hostnamechanger
 sudo chmod ugo+x /usr/local/bin/hostnamechanger
 sudo chmod ugo+x /etc/network/if-pre-up.d/hostnamechanger
+sudo /usr/local/bin/hostnamechanger
 
 echo "${CYN}Installing Wifite2...${NC}" 
 sudo apt -qq install wifite -y
