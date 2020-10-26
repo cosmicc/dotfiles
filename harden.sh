@@ -22,10 +22,12 @@ sudo sh -c 'echo "install rds /bin/true" >> /etc/modprobe.d/CIS.conf'
 sudo sh -c 'echo "install tipc /bin/true" >> /etc/modprobe.d/CIS.conf'
 
 echo "${CYN}Securing SSH...${NC}"
-sudo chmod o+w /etc/ssh
+sudo chmod go+w /etc/ssh
+sudo chmod go+w /etc/ssh/sshd_config
 sed s/USERNAME/$USER/g templates/sshd_config > /etc/ssh/sshd_config
 sudo chown root.root /etc/ssh/sshd_config
-sudo chmod o-w /etc/ssh
+sudo chmod go-w /etc/ssh
+sudo chmod go-w /etc/ssh/sshd_config
 chattr -i /home/$USER/.ssh/authorized_keys
 sudo service ssh restart
 
