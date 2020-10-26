@@ -101,10 +101,13 @@ echo -n "${YEL}Install 64bit Rpi Userland (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing 64bit Rpi Userland...${NC}"
-    sudo git clone https://github.com/raspberrypi/userland.git /opt/build/userland
+    git clone https://github.com/raspberrypi/userland.git /opt/build/userland
     cd /opt/build/userland
-    sudo 
-    sudo sh -c "mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DARM64=ON ../ && make -j4 && make install"
+    mkdir build 
+    cd build 
+    cmake -DCMAKE_BUILD_TYPE=Release -DARM64=ON ../
+    make -j4
+    sudo make install
     sudo cp -rfp /opt/vc/* /usr
     cd ~
     sudo apt -qq install rpi-eeprom wiringpi -y
