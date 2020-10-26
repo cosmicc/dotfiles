@@ -65,29 +65,6 @@ if [ $answer = "y" ]; then
     sudo apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
 fi
 
-echo -n "${YEL}Install Moified Rpi config.txt (y/n)? ${NC}"
-read answer
-if [ $answer = "y" ]; then 
-    echo "${CYN}Installing Modified Rpi config.txt...${NC}"
-    sudo cp dotfiles/templates/rpi-config.txt /boot/firmware/config.txt -f
-fi
-
-
-echo -n "${YEL}Install 64bit Rpi Userland (y/n)? ${NC}"
-read answer
-if [ $answer = "y" ]; then 
-    echo "${CYN}Installing 64bit Rpi Userland...${NC}"
-    sudo git clone https://github.com/raspberrypi/userland.git /opt/build/userland
-    cd /opt/build/userland
-    sudo mkdir build && cd build
-    sudo sh -c "cmake -DCMAKE_BUILD_TYPE=Release -DARM64=ON ../"
-    sudo sh -c "make -j4"
-    sudo sh -c "make install"
-    sudo cp -rfp /opt/vc/* /usr
-    cd ~
-    sudo apt -qq install rpi-eeprom wiringpi -y
-fi
-
 echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
@@ -110,6 +87,29 @@ if [ $answer = "y" ]; then
     sudo cp dotfiles/sublimemonokai.vim /root/.vim/colors
     vim +PluginInstall +qall
     sudo vim +PluginInstall +qall 
+fi
+
+echo -n "${YEL}Install Moified Rpi config.txt (y/n)? ${NC}"
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing Modified Rpi config.txt...${NC}"
+    sudo cp dotfiles/templates/rpi-config.txt /boot/firmware/config.txt -f
+fi
+
+
+echo -n "${YEL}Install 64bit Rpi Userland (y/n)? ${NC}"
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing 64bit Rpi Userland...${NC}"
+    sudo git clone https://github.com/raspberrypi/userland.git /opt/build/userland
+    cd /opt/build/userland
+    sudo mkdir build && cd build
+    sudo sh -c "cmake -DCMAKE_BUILD_TYPE=Release -DARM64=ON ../"
+    sudo sh -c "make -j4"
+    sudo sh -c "make install"
+    sudo cp -rfp /opt/vc/* /usr
+    cd ~
+    sudo apt -qq install rpi-eeprom wiringpi -y
 fi
 
 echo -n "${YEL}Install Python3 Libraries (y/n)? ${NC}"
