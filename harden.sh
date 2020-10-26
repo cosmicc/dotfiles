@@ -4,22 +4,22 @@ CYN='\033[1;36m'
 NC='\033[0m'
 
 echo "${CYN}Setting Restrictive UMASK...${NC}"
-cp templates/login.defs /etc/login.defs
+sudo cp templates/login.defs /etc/login.defs
 
 echo "${CYN}Disabling Unused Filesystems...${NC}"
-echo "install cramfs /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install freevxfs /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install jffs2 /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install hfs /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install hfsplus /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install squashfs /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install udf /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install cramfs /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install freevxfs /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install jffs2 /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install hfs /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install hfsplus /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install squashfs /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install udf /bin/true" >> /etc/modprobe.d/CIS.conf
 
 echo "${CYN}Disabling Unused Net Protocols...${NC}"
-echo "install dccp /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install sctp /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install rds /bin/true" >> /etc/modprobe.d/CIS.conf
-echo "install tipc /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install dccp /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install sctp /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install rds /bin/true" >> /etc/modprobe.d/CIS.conf
+sudo echo "install tipc /bin/true" >> /etc/modprobe.d/CIS.conf
 
 echo "${CYN}Securing SSH...${NC}"
 sudo chmod o+w /etc/ssh
@@ -39,7 +39,7 @@ echo "${CYN}Installing Fail2Ban...${NC}"
 sudo apt -qq install fail2ban -y
 # sed s/MAILTO/$inbox/g templates/fail2ban > /etc/fail2ban/jail.local
 sudo cp /etc/fail2ban/jail.local /etc/fail2ban/jail.conf
-/etc/init.d/fail2ban restart
+sudo /etc/init.d/fail2ban restart
 
 echo "${CYN}Securing Kernel...${NC}"
 sudo sh -c 'echo "* hard core 0" >> /etc/security/limits.conf'
