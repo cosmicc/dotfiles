@@ -3,7 +3,7 @@ CYN='\033[1;36m'
 NC='\033[0m'
 
 echo "${CYN}Installing Prerequisites...${NC}"
-sudo apt -qq install libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl -y
+sudo apt -qq install libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev -y
 
 echo "${CYN}Installing Chirp...${NC}"
 sudo apt -qq install chirp -y
@@ -141,18 +141,12 @@ if [ $answer = "y" ]; then
     sudo make install
     cd /opt/build/radio-tools
 
-    echo "${CYN}Installing Flwrap...${NC}"
+    echo "${CYN}Installing JS8Call...${NC}"
     cd /opt/build/radio-tools
-    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flwrap/
-    ls -tQ flwrap*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flwrap*.tar.gz
-    rm flwrap*.tar.gz
-    cd flwrap-*
-    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flwrap/
-    ./configure
-    make -j4
-    sudo make install
-    cd /opt/build/radio-tools
+    git clone https://widefido@bitbucket.org/widefido/js8ca/usr/lib/aarch64-linux-gnull.git
+    mkdir build
+    cd build
+    cmake -Dhamlib_LIBRARY_DIRS=/usr/lib/aarch64-linux-gnu ../
 fi
 
 
