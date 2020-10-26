@@ -62,7 +62,7 @@ echo -n "${YEL}Install Essential System Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential System Packages...${NC}"
-    sudo apt -qq install pipenv neofetch pax p7zip-rar lmsensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
+    sudo apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
 fi
 
 echo -n "${YEL}Install Moified Rpi config.txt (y/n)? ${NC}"
