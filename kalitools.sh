@@ -25,8 +25,8 @@ fi
 
 echo "${CYN}Installing MAC and Hostname Changer...${NC}"
 sudo apt -qq install macchanger -y
-sudo cp dotfiles/templates/hostnamechanger /usr/local/bin
-sudo cp dotfiles/templates/hostnamechanger.py /usr/local/bin
+sudo cp templates/hostnamechanger /usr/local/bin
+sudo cp templates/hostnamechanger.py /usr/local/bin
 sudo ln -s /usr/local/bin/hostnamechanger /etc/network/if-pre-up.d/hostnamechanger
 sudo chmod ugo+x /usr/local/bin/hostnamechanger
 sudo chmod ugo+x /etc/network/if-pre-up.d/hostnamechanger
