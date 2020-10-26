@@ -3,6 +3,8 @@ YEL='\033[1;33m'
 CYN='\033[1;36m' 
 NC='\033[0m'
 
+sudo chown %USERNAME.$USERNAME /opt/build -R
+
 echo -n "${YEL}Generate RSA Keys (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then    
