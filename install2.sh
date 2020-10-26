@@ -37,6 +37,9 @@ else
     cd ~
 fi
 
+echo "${CYN}Adding Universe Repository...${NC}"
+sudo add-apt-repository universe
+
 echo "${CYN}Updating packages...${NC}"
 sudo apt-get -qq update -y
 
