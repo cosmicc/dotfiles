@@ -103,10 +103,8 @@ if [ $answer = "y" ]; then
     echo "${CYN}Installing 64bit Rpi Userland...${NC}"
     sudo git clone https://github.com/raspberrypi/userland.git /opt/build/userland
     cd /opt/build/userland
-    sudo mkdir build && cd build
-    sudo sh -c "cmake -DCMAKE_BUILD_TYPE=Release -DARM64=ON ../"
-    sudo sh -c "make -j4"
-    sudo sh -c "make install"
+    sudo 
+    sudo sh -c "mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DARM64=ON ../ && make -j4 && make install"
     sudo cp -rfp /opt/vc/* /usr
     cd ~
     sudo apt -qq install rpi-eeprom wiringpi -y
