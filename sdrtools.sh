@@ -8,14 +8,153 @@ sudo apt -qq install libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python
 echo "${CYN}Installing Chirp...${NC}"
 sudo apt -qq install chirp -y
 
-echo "${CYN}Installing Fldigi...${NC}"
+echo -n "${YEL}Download, Compile & Install Fldigi Suite (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing Fldigi...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/fldigi/
+    ls -tQ fldigi*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz fldigi*.tar.gz
+    rm fldigi*.tar.gz
+    cd fldigi-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/fldigi/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
 
-cd /opt/build/radio-tools
-wget http://www.w1hkj.com/files/fldigi/fldigi*.tar.gz
-tar xbfz fldigi*.tar.gz
-./configure
-make -j4
-sudo make install
+    echo "${CYN}Installing Flrig...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flrig/
+    ls -tQ flrig*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flrig*.tar.gz
+    rm flrig*.tar.gz
+    cd flrig-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flrig/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+
+    echo "${CYN}Installing Flmsg...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flmsg/
+    ls -tQ flmsg*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flmsg*.tar.gz
+    rm flmsg*.tar.gz
+    cd flmsg-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flmsg/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+
+    echo "${CYN}Installing Flamp...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flamp/
+    ls -tQ flamp*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flamp*.tar.gz
+    rm flamp*.tar.gz
+    cd flamp-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flamp/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+    
+    echo "${CYN}Installing Fllog...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/fllog/
+    ls -tQ fllog*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz fllog*.tar.gz
+    rm fllog*.tar.gz
+    cd fllog-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/fllog/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+    
+    echo "${CYN}Installing Flnet...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flnet/
+    ls -tQ flnet*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flnet*.tar.gz
+    rm flnet*.tar.gz
+    cd flnet-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flnet/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+
+    echo "${CYN}Installing Flwkey...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flwkey/
+    ls -tQ flwkey*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flwkey*.tar.gz
+    rm flwkey*.tar.gz
+    cd flwkey-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flwkey/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+
+    echo "${CYN}Installing Flwrap...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flwrap/
+    ls -tQ flwrap*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flwrap*.tar.gz
+    rm flwrap*.tar.gz
+    cd flwrap-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flwrap/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+
+    echo "${CYN}Installing Flcluster...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flcluster/
+    ls -tQ flcluster*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flcluster*.tar.gz
+    rm flcluster*.tar.gz
+    cd flcluster-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flcluster/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+
+    echo "${CYN}Installing Flaa...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flaa/
+    ls -tQ flaa*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flaa*.tar.gz
+    rm flaa*.tar.gz
+    cd flaa-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flaa/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+
+    echo "${CYN}Installing Flwrap...${NC}"
+    cd /opt/build/radio-tools
+    wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flwrap/
+    ls -tQ flwrap*.tar.gz | tail -n+2 | xargs rm
+    tar xbfz flwrap*.tar.gz
+    rm flwrap*.tar.gz
+    cd flwrap-*
+    wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flwrap/
+    ./configure
+    make -j4
+    sudo make install
+    cd /opt/build/radio-tools
+fi
+
 
 
 
