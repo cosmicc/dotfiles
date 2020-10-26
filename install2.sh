@@ -3,7 +3,7 @@ YEL='\033[1;33m'
 CYN='\033[1;36m' 
 NC='\033[0m'
 
-sudo chown %USERNAME.$USERNAME /opt/build -R
+sudo chown $USERNAME.$USERNAME /opt -R
 
 echo -n "${YEL}Generate RSA Keys (y/n)? ${NC}" 
 read answer
@@ -120,7 +120,7 @@ read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Python Libraries...${NC}"
     sudo apt-get -qq install python3-dev -y
-    pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 1> /dev/null
+    sudo pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 1> /dev/null
 fi
 
 echo -n "${YEL}Install Xubuntu-desktop (y/n)? ${NC}"
@@ -130,33 +130,35 @@ if [ $answer = "y" ]; then
     sudo apt -qq install xubuntu-core^ slick-greeter libpam-kwallet4 libpam-kwallet5 -y
     sudo sh -c 'echo "[SeatDefaults]\ngreeter-session=slick-greeter\n" > /etc/lightdm/lightdm.conf'
     echo "${CYN}Installing Xubuntu-desktop Apps...${NC}"
-    sudo apt -qq install app-install-data-partner gparted fonts-firacode fonts-noto chromium-browser mugshot blueman bluez catfish desktop-file-utils evince espeak file-roller firefox fwupd fwupdate gigolo gnome-calculator gnome-software gnome-system-tools indicator-application indicator-messages indicator-sound inxi libnotify-bin libnss-mdns libpam-gnome-keyring libxfce4ui-utils light-locker lightdm-gtk-greeter-settings menulibre network-manager-gnome onboard pavucontrol ristretto software-properties-gtk speech-dispatcher thunar-archive-plugin thunar-media-tags-plugin transmission-gtk ttf-ubuntu-font-family update-notifier xcursor-themes xfce4-cpugraph-plugin xfce4-dict xfce4-indicator-plugin xfce4-netload-plugin xfce4-places-plugin xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal xfce4-verve-plugin xfce4-whiskermenu-plugin xfpanel-switch xul-ext-ubufox terminator notepadqq vlc -y
+    sudo apt -qq install app-install-data-partner gparted network-manager-openconnect-gnome network-manager-openvpn-gnome network-manager-vpnc-gnome fonts-firacode fonts-noto chromium-browser mugshot blueman bluez catfish desktop-file-utils evince espeak file-roller firefox fwupd fwupdate gigolo gnome-calculator gnome-software gnome-system-tools indicator-application indicator-messages indicator-sound inxi libnotify-bin libnss-mdns libpam-gnome-keyring libxfce4ui-utils light-locker lightdm-gtk-greeter-settings menulibre network-manager-gnome onboard pavucontrol ristretto software-properties-gtk speech-dispatcher thunar-archive-plugin thunar-media-tags-plugin transmission-gtk ttf-ubuntu-font-family update-notifier xcursor-themes xfce4-cpugraph-plugin xfce4-dict xfce4-indicator-plugin xfce4-netload-plugin xfce4-places-plugin xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal xfce4-verve-plugin xfce4-whiskermenu-plugin xfpanel-switch xul-ext-ubufox terminator notepadqq vlc -y
     echo "${CYN}Restoring Xfce Settings...${NC}"
+    mkdir ~/.config/xfce4/xfconf/xfce-perchannel-xml -p
     tar xvfz dotfiles/templates/settings.tar.gz -C ~/.config/xfce4/xfconf/xfce-perchannel-xml
 fi
 
-echo -n "Remove Games (y/n)? "
+echo -n "${YEL}Remove Games (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
+    echo "${CYN}Removing Games...${NC}"
     sudo apt -qq remove sgt-puzzles ristretto *sudoko libgnome-games* gnome-mines -y
 fi
 
-echo -n "Remove CUPS Printing (y/n)? "
+echo -n "${YEL}Remove CUPS Printing (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
-    echo "Removing CUPS Printing..."
+    echo "${CYN}Removing CUPS Printing...${NC}"
     sudo apt -qq remove cups* -y
 fi    
 
-echo -n "Remove LibreOffice (y/n)? "
+echo -n "${YEL}Remove LibreOffice (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
-    echo "Removing Libreoffice..."
+    echo "${CYN}Removing Libreoffice...${NC}"
     sudo apt -qq remove libreoffice* -y
 fi
 
-echo "Upgrading packages..."
+echo "${CYN}Upgrading packages...${NC}"
 sudo apt -qq full-upgrade -y
 
-echo "Removing un-needed packages..."
+echo "${CYN}Removing un-needed packages...${NC}"
 sudo apt -qq  autoremove -y
