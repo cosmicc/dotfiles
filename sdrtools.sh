@@ -160,6 +160,10 @@ if [ $answer = "y" ]; then
     cmake -Dhamlib_LIBRARY_DIRS=/usr/lib/aarch64-linux-gnu -DJS8_USE_HAMLIB_THREE=1 ../
     sed -i '1s/^/#define JS8_USE_HAMLIB_THREE\n /' /opt/build/radio-tools/js8call/HamlibTransceiver.hpp
     make
+    sudo make install
+    echo "${CYN}Installing JS8Call Utilities...${NC}"
+    cd /opt/build/radio-tools
+    git clone https://github.com/m0iax/JS8CallUtilities_V2.git
 fi
 
 echo -n "${YEL}Download, Compile & Install GQRX (y/n)? ${NC}" 
