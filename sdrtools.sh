@@ -197,6 +197,7 @@ if [ $answer = "y" ]; then
         echo "${CYN}Updaing Dump1090 Source...${NC}"
         cd dump1090
         sudo rm dump1090 -f
+        make clean
         git pull
     fi
     make
@@ -225,9 +226,19 @@ read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing GPredict...${NC}"
     cd /opt/build/radio-tools
-    git clone https://github.com/csete/gpredict.git
-    cd gpredict
-    
+    if [ ! -d "/opt/build/radio-tools/gpredict" ]; then
+        echo "${CYN}Cloning Dump1090 Source...${NC}"
+        git clone https://github.com/csete/gpredict.git
+        cd gpredict
+    else    
+        echo "${CYN}Updating Dump1090 Source...${NC}"
+        cd gpredict
+        git pull
+        make clean
+    fi
+    ./autogen.sh
+    make
+    sudo make install
 fi
 
 
