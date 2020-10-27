@@ -3,7 +3,9 @@ YEL='\033[1;33m'
 CYN='\033[1;36m' 
 NC='\033[0m'
 
+USERNAME=$USER
 sudo chown $USERNAME.$USERNAME /opt -R
+mkdir /opt/build
 
 echo -n "${YEL}Remove an old user (y/n)? ${NC}" 
 read answer
@@ -109,7 +111,6 @@ if [ $answer = "y" ]; then
     echo "${CYN}Installing Modified Rpi config.txt...${NC}"
     sudo cp dotfiles/templates/rpi-config.txt /boot/firmware/config.txt -f
 fi
-
 
 echo -n "${YEL}Install 64bit Rpi Userland (y/n)? ${NC}"
 read answer
