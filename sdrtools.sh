@@ -243,4 +243,16 @@ fi
 
 
 
+echo -n "${YEL}Download, Compile & Install GRIG (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing GRIG Prerequisites...${NC}"
+    sudo apt -qq install gtk+2.0 -f
+    echo "${CYN}Installing GRIG...${NC}"
+    cd /opt/build/radio-tools
+    wget https://sourceforge.net/projects/groundstation/files/Grig/0.8.1/grig-0.8.1.tar.gz
+    tar xvfz grig*.tar.gz
+    rm grig.tar.gz -f
+    cd grig*
+fi
 
