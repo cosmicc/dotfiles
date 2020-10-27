@@ -135,7 +135,7 @@ read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Python Libraries...${NC}"
     sudo apt-get -qq install python3-dev -y
-    sudo pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 1> /dev/null
+    sudo pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 maidenhead pyserial gps configparser 1> /dev/null
 fi
 
 echo -n "${YEL}Install Xubuntu-desktop (y/n)? ${NC}"
