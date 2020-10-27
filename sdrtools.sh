@@ -2,6 +2,8 @@ YEL='\033[1;33m'
 CYN='\033[1;36m' 
 NC='\033[0m'
 
+mkdir /opt/build/radio-tools
+
 echo "${CYN}Installing Prerequisites...${NC}"
 sudo apt -qq install libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev gr-osmosdr libosmosdr-dev libqt5svg5-dev librtlsdr-dev osmo-sdr portaudio19-dev qt5-default gr-osmosdr gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev gtk+2.0 -y
 
@@ -15,7 +17,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/fldigi/
     ls -tQ fldigi*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz fldigi*.tar.gz
+    tar xfz fldigi*.tar.gz
     rm fldigi*.tar.gz
     cd fldigi-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/fldigi/
@@ -28,7 +30,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flrig/
     ls -tQ flrig*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flrig*.tar.gz
+    tar xfz flrig*.tar.gz
     rm flrig*.tar.gz
     cd flrig-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flrig/
@@ -41,7 +43,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flmsg/
     ls -tQ flmsg*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flmsg*.tar.gz
+    tar xfz flmsg*.tar.gz
     rm flmsg*.tar.gz
     cd flmsg-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flmsg/
@@ -54,7 +56,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flamp/
     ls -tQ flamp*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flamp*.tar.gz
+    tar xfz flamp*.tar.gz
     rm flamp*.tar.gz
     cd flamp-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flamp/
@@ -67,7 +69,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/fllog/
     ls -tQ fllog*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz fllog*.tar.gz
+    tar xfz fllog*.tar.gz
     rm fllog*.tar.gz
     cd fllog-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/fllog/
@@ -80,7 +82,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flnet/
     ls -tQ flnet*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flnet*.tar.gz
+    tar xfz flnet*.tar.gz
     rm flnet*.tar.gz
     cd flnet-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flnet/
@@ -93,7 +95,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flwkey/
     ls -tQ flwkey*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flwkey*.tar.gz
+    tar xfz flwkey*.tar.gz
     rm flwkey*.tar.gz
     cd flwkey-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flwkey/
@@ -106,7 +108,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flwrap/
     ls -tQ flwrap*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flwrap*.tar.gz
+    tar xfz flwrap*.tar.gz
     rm flwrap*.tar.gz
     cd flwrap-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flwrap/
@@ -119,7 +121,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flcluster/
     ls -tQ flcluster*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flcluster*.tar.gz
+    tar xfz flcluster*.tar.gz
     rm flcluster*.tar.gz
     cd flcluster-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flcluster/
@@ -132,7 +134,7 @@ if [ $answer = "y" ]; then
     cd /opt/build/radio-tools
     wget -r -nd --no-parent -A '*.tar.gz' http://www.w1hkj.com/files/flaa/
     ls -tQ flaa*.tar.gz | tail -n+2 | xargs rm
-    tar xbfz flaa*.tar.gz
+    tar xfz flaa*.tar.gz
     rm flaa*.tar.gz
     cd flaa-*
     wget -r -nd --no-parent -A '*.pdf' http://www.w1hkj.com/files/flaa/
