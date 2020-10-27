@@ -7,6 +7,8 @@ USERNAME=$USER
 sudo chown $USERNAME.$USERNAME /opt -R
 mkdir /opt/build
 
+git config pull.rebase false
+
 echo -n "${YEL}Remove an old user (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then
@@ -78,7 +80,7 @@ echo -n "${YEL}Install Essential System Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential System Packages...${NC}"
-    sudo apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server -y
+    sudo apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server dos2unix -y
 fi
 
 echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
