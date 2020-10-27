@@ -5,7 +5,7 @@ NC='\033[0m'
 mkdir /opt/build/radio-tools
 
 echo "${CYN}Installing Prerequisites...${NC}"
-sudo apt -qq install libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev gr-osmosdr libosmosdr-dev libqt5svg5-dev librtlsdr-dev osmo-sdr portaudio19-dev qt5-default gr-osmosdr gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev -y
+sudo apt -qq install libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev gr-osmosdr libosmosdr-dev libqt5svg5-dev librtlsdr-dev osmo-sdr portaudio19-dev qt5-default gr-osmosdr gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev libsigc++-2.0-dev libpopt-dev libspeex-dev libopus-dev libgcrypt20-dev tcl tcl-dev sox libwxbase3.0-dev -y
 
 echo "${CYN}Installing Chirp...${NC}"
 sudo apt -qq install chirp -y
@@ -159,6 +159,7 @@ if [ $answer = "y" ]; then
     fi
     mkdir build
     cd build
+    echo "${CYN}Compiling & Installing JS8Call...${NC}"
     cmake -Dhamlib_LIBRARY_DIRS=/usr/lib/aarch64-linux-gnu -DJS8_USE_HAMLIB_THREE=1 ../
     sed -i '1s/^/#define JS8_USE_HAMLIB_THREE\n /' /opt/build/radio-tools/js8call/HamlibTransceiver.hpp
     make
@@ -183,6 +184,7 @@ if [ $answer = "y" ]; then
         rm -r build
         git pull
     fi
+    echo "${CYN}Compiling & Installing GQRX...${NC}"
     mkdir build
     cd build
     cmake ../
@@ -206,6 +208,7 @@ if [ $answer = "y" ]; then
         make clean
         git pull
     fi
+    echo "${CYN}Compiling & Installing Dump1090...${NC}"
     make
     sudo cp dump1090 /usr/local/bin -f
     sudo chmod ugo+x /usr/local/bin/dump1090
@@ -242,12 +245,11 @@ if [ $answer = "y" ]; then
         git pull
         make clean
     fi
+    echo "${CYN}Compiling & Installing GPredict...${NC}"
     ./autogen.sh
     make
     sudo make install
 fi
-
-
 
 echo -n "${YEL}Download, Compile & Install GRIG (y/n)? ${NC}" 
 read answer
@@ -261,4 +263,112 @@ if [ $answer = "y" ]; then
     rm grig.tar.gz -f
     cd grig*
 fi
+
+echo -n "${YEL}Download, Compile & Install QTel (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing QTel...${NC}"
+    cd /opt/build/radio-tools
+    if [ ! -d "/opt/build/radio-tools/svxlink" ]; then
+        echo "${CYN}Cloning QTel Source...${NC}"
+        git clone https://github.com/sm0svx/svxlink.git
+        cd svxlink/src
+        mkdir build
+        cd build
+    else
+        echo "${CYN}Updating QTel Source...${NC}"
+        cd svxlink/src/build
+        make clean
+        git pull
+    fi
+    echo "${CYN}Compiling & Installing QTel...${NC}"
+    cmake ../
+    make
+    sudo make install
+fi
+
+echo -n "${YEL}Download, Compile & Install FreeDV (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    mkdir /opt/build/radio-tools/freedv
+    echo "${CYN}Installing Codec2...${NC}"
+    cd /opt/build/radio-tools/freedv
+    if [ ! -d "/opt/build/radio-tools/freedv/codec2" ]; then
+        echo "${CYN}Cloning Codec2 Source...${NC}"
+        git clone https://github.com/drowe67/codec2.git
+        cd codec2
+        mkdir build
+        cd build
+    else
+        echo "${CYN}Updating Codec2 Source...${NC}"
+        cd codec2/build
+        make clean
+        git pull
+    fi
+    echo "${CYN}Compiling & Installing Codec2...${NC}"
+    cmake ../
+    make
+    sudo make install
+
+    echo "${CYN}Installing LPCNet...${NC}"
+    if [ ! -d "/opt/build/radio-tools/freedv/LPCNet" ]; then
+        echo "${CYN}Cloning LPCNet Source...${NC}"
+        git clone https://github.com/drowe67/LPCNet
+        cd LPCNet
+        mkdir build
+        cd build
+    else
+        echo "${CYN}Updating LPCNet Source...${NC}"
+        cd LPCNet/build
+        make clean
+        git pull
+    fi
+    echo "${CYN}Compiling & Installing LPCNet...${NC}"
+    cmake -Dcodec2_DIR=/opt/build/radio-tools/freedv/codec2/build ../
+    make
+    sudo make install
+    
+    echo "${CYN}Rebuilding Codec2 with LPCNet...${NC}"
+    cd /opt/build/radio-tools/freedv/codec2/build
+    rm -Rf *
+    cmake -DLPCNET_BUILD_DIR=/opt/build/radio-tools/freedv/LPCNet/build ..
+    make
+    sudo make install
+
+    echo "${CYN}Installing FreeDV...${NC}"
+    cd /opt/build/radio-tools/freedv
+    if [ ! -d "/opt/build/radio-tools/freedv/freedv-gui" ]; then
+        echo "${CYN}Cloning FreeDV Source...${NC}"
+        git clone https://github.com/drowe67/freedv-gui.git
+        cd freedv-gui
+    else
+        echo "${CYN}Updating FreeDV Source...${NC}"
+        cd freedv-gui
+        git pull
+    fi
+    echo "${CYN}Compiling & Installing FreeDV...${NC}"
+    sh build_linuc.sh
+fi
+
+echo -n "${YEL}Download, Compile & Install VOACAP (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    echo "${CYN}Installing VOACAP...${NC}"
+    cd /opt/build/radio-tools
+    if [ ! -d "/opt/build/radio-tools/voacapl" ]; then
+        echo "${CYN}Cloning VOACAP Source...${NC}"
+        git clone https://github.com/jawatson/voacapl.git
+        cd voacapl
+    else
+        echo "${CYN}Updating VOACAP Source...${NC}"
+        cd voacapl
+        make clean
+        git pull
+    fi
+    echo "${CYN}Compiling & Installing VOACAP...${NC}"
+    ./configure
+    make
+    sudo make install
+    makeitshfbc
+fi    
 
