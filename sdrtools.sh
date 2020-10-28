@@ -5,7 +5,7 @@ NC='\033[0m'
 mkdir /opt/build/radio-tools
 
 echo "${CYN}Installing Prerequisites...${NC}"
-sudo apt -qq install libfftw3-dev libusb-1.0-0-dev libusb-dev qt5-default qtbase5-dev qtchooser libqt5multimedia5-plugins qtmultimedia5-dev libqt5websockets5-dev qttools5-dev qttools5-dev-tools libqt5opengl5-dev qtbase5-dev libqt5quick5 qml-module-qtlocation  qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick-window2 qml-module-qtquick-dialogs qml-module-qtquick-controls qml-module-qtquick-layouts libqt5serialport5-dev qtdeclarative5-dev qtpositioning5-dev qtlocation5-dev libboost-all-dev libasound2-dev pulseaudio libopencv-dev libxml2-dev bison flex ffmpeg libavcodec-dev libavformat-dev libopus-dev doxygen graphviz libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev gr-osmosdr libosmosdr-dev libqt5svg5-dev librtlsdr-dev osmo-sdr portaudio19-dev qt5-default gr-osmosdr gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev libsigc++-2.0-dev libpopt-dev libspeex-dev libopus-dev libgcrypt20-dev tcl tcl-dev sox libwxbase3.0-dev libwxgtk3.0-gtk3-dev libmotif-dev imagemagick gpsman libspeexdsp-dev openjdk-8-jre ax25-tools ax25-apps soundmodem libliquid2d libtinyxml2.6.2v5 soapysdr-module-all -y
+sudo apt -qq install libfftw3-dev libusb-1.0-0-dev libusb-dev qt5-default qtbase5-dev qtchooser libqt5multimedia5-plugins qtmultimedia5-dev libqt5websockets5-dev qttools5-dev qttools5-dev-tools libqt5opengl5-dev qtbase5-dev libqt5quick5 qml-module-qtlocation  qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick-window2 qml-module-qtquick-dialogs qml-module-qtquick-controls qml-module-qtquick-layouts libqt5serialport5-dev qtdeclarative5-dev qtpositioning5-dev qtlocation5-dev libboost-all-dev libasound2-dev pulseaudio libopencv-dev libxml2-dev bison flex ffmpeg libavcodec-dev libavformat-dev libopus-dev doxygen graphviz libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev gr-osmosdr libosmosdr-dev libqt5svg5-dev librtlsdr-dev osmo-sdr portaudio19-dev qt5-default gr-osmosdr gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev libsigc++-2.0-dev libpopt-dev libspeex-dev libopus-dev libgcrypt20-dev tcl tcl-dev sox libwxbase3.0-dev libwxgtk3.0-gtk3-dev libmotif-dev imagemagick gpsman libspeexdsp-dev openjdk-8-jre ax25-tools ax25-apps soundmodem libliquid2d libtinyxml2.6.2v5 soapysdr-module-all jackd libncurses-dev libboost-dev libboost-date-time-dev libboost-system-dev libboost-filesystem-dev libboost-thread-dev libboost-chrono-dev libboost-serialization-dev liblog4cpp5-dev libuhd-dev gnuradio-dev gr-osmosdr libblas-dev liblapack-dev libarmadillo-dev libgflags-dev libgoogle-glog-dev libgnutls-openssl-dev libpcap-dev libmatio-dev libpugixml-dev libgtest-dev libprotobuf-dev protobuf-compiler python3-mako -y
 
 echo "${CYN}Installing Chirp...${NC}"
 sudo apt -qq install chirp -y
@@ -290,7 +290,7 @@ fi
 echo -n "${YEL}Download, Compile & Install FreeDV (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then
-    mkdir /opt/build/radio-tools
+    cd /opt/build/radio-tools
     echo "${CYN}Installing FreeDV...${NC}"
     if [ ! -d "/opt/build/radio-tools/freedv-gui" ]; then
         echo "${CYN}Cloning FreeDV Source...${NC}"
@@ -334,7 +334,7 @@ fi
 echo -n "${YEL}Download, Compile & Install Xastir (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then
-    mkdir /opt/build/radio-tools
+    cd /opt/build/radio-tools
     echo "${CYN}Installing Xastir...${NC}"
     if [ ! -d "/opt/build/radio-tools/Xastir" ]; then
         echo "${CYN}Cloning Xastir Source...${NC}"
@@ -354,7 +354,7 @@ fi
 echo -n "${YEL}Download, Compile & Install YAAC (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then
-    mkdir /opt/build/radio-tools
+    cd /opt/build/radio-tools
     echo "${CYN}Installing YAAC...${NC}"
     if [ ! -d "/opt/build/radio-tools/Xastir" ]; then
         echo "${CYN}Cloning YAAC Source...${NC}"
@@ -374,7 +374,7 @@ fi
 echo -n "${YEL}Download, Compile & Install YAAC (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then
-    mkdir /opt/build/radio-tools
+    cd /opt/build/radio-tools
     echo "${CYN}Installing YAAC...${NC}"
     if [ -d "/opt/build/radio-tools/yaac" ]; then
         rm -r yaac
@@ -392,7 +392,7 @@ fi
 echo -n "${YEL}Download, Compile & Install Direwolf (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then
-    mkdir /opt/build/radio-tools
+    cd /opt/build/radio-tools
     echo "${CYN}Installing Direwolf...${NC}"
     if [ ! -d "/opt/build/radio-tools/direwolf" ]; then
         echo "${CYN}Cloning Direwolf Source...${NC}"
@@ -435,5 +435,116 @@ echo -n "${YEL}Install CuteSDR Package (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then
     sudo apt -qq install cutesdr -y
+fi
+
+echo -n "${YEL}Download, Compile & Install Lysdr (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    mkdir /opt/build/radio-tools
+    echo "${CYN}Installing Lysdr...${NC}"
+    if [ ! -d "/opt/build/radio-tools/lysdr" ]; then
+        echo "${CYN}Cloning Lysdr Source...${NC}"
+        git clone https://github.com/gordonjcp/lysdr.git
+        cd lysdr
+        echo "${CYN}Compiling & Installing Lysdr...${NC}"
+        ./autogen.sh
+        ./configure
+        make
+    else
+        echo "${CYN}Updating Lysdr Source...${NC}"
+        cd lysdr
+        make clean
+        git pull
+        echo "${CYN}Compiling & Installing Lysdr...${NC}"
+        ./autogen.sh
+        ./configure
+        make -j4
+        sudo make install
+    fi
+fi
+
+echo -n "${YEL}Download & Install Quisk (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    cd /opt/build/radio-tools
+    echo "${CYN}Installing Quisk...${NC}"
+    sudo -H python3 -m pip install --upgrade quisk
+fi
+
+echo -n "${YEL}Download, Compile & Install twpsk (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    echo "${CYN}Installing twpsk...${NC}"
+    cd /opt/build/radio-tools
+    wget http://wa0eir.bcts.info/src/twpsk-4.3.src.tar.gz
+    tar xvfz twpsk*.src.tar.gz
+    rm twpsk*.src.tar.gz
+    cd twpsk*
+    ./configure
+    make -j4
+    make install
+fi
+
+echo -n "${YEL}Download, Compile & Install psk31lx (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    echo "${CYN}Installing psk31lx...${NC}"
+    cd /opt/build/radio-tools
+    wget http://wa0eir.bcts.info/src/psk31lx-2.2.src.tar.gz
+    tar xvfz psk31lx*.src.tar.gz
+    rm psk31lx*.src.tar.gz
+    cd psk31lx*
+    ./configure
+    make -j4
+    make install
+fi
+
+echo -n "${YEL}Download, Compile & Install Multimon-ng (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    mkdir /opt/build/radio-tools
+    echo "${CYN}Installing Multimon-ng...${NC}"
+    if [ ! -d "/opt/build/radio-tools/lysdr" ]; then
+        echo "${CYN}Cloning Multimon-ng Source...${NC}"
+        git clone https://github.com/gordonjcp/lysdr.git
+        cd multimon-ng
+        mkdir build
+        cd build
+    else
+        echo "${CYN}Updating Multimon-ng Source...${NC}"
+        cd multimon-ng
+        make clean
+        git pull
+        cd build
+        make clean
+    fi
+        echo "${CYN}Compiling & Installing Multimon-ng...${NC}"
+        cmake ..
+        make -j4
+        sudo make install
+fi
+
+echo -n "${YEL}Download, Compile & Install GNSS-SDR (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    mkdir /opt/build/radio-tools
+    echo "${CYN}Installing GNSS-SDR...${NC}"
+    if [ ! -d "/opt/build/radio-tools/gnss-sdr" ]; then
+        echo "${CYN}Cloning GNSS-SDR Source...${NC}"
+        git clone https://github.com/gnss-sdr/gnss-sdr.git
+        cd gnss-sdr
+        cd build
+    else
+        echo "${CYN}Updating GNSS-SDR Source...${NC}"
+        cd gnss-sdr
+        make clean
+        git pull
+        cd build
+        make clean
+    fi
+        echo "${CYN}Compiling & Installing GNSS-SDR...${NC}"
+        cmake ..
+        make -j4
+        sudo make install
 fi
 
