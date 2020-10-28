@@ -87,7 +87,7 @@ echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential Building Packages...${NC}"
-     sudo apt -qq install build-essential make cmake automake gcc-aarch64-linux-gnu g++-aarch64-linux-gnu gcc -y
+     sudo apt -qq install build-essential make cmake automake pkg-config gcc-aarch64-linux-gnu g++-aarch64-linux-gnu gcc -y
 fi
 
 echo -n "${YEL}Install VIM (y/n)? ${NC}"
