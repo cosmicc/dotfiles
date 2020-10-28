@@ -114,6 +114,26 @@ if [ $answer = "y" ]; then
     sudo cp dotfiles/templates/rpi-config.txt /boot/firmware/config.txt -f
 fi
 
+echo -n "${YEL}Force Processors to Max Speed (y/n)? ${NC}"
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Forcing Processors to Max Speed...${NC}"
+    sudo sh -c 'echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor'
+    sudo sh -c 'echo "echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor" > /etc/init.d/governor'
+    sudo chmod ugo+rx /etc/init.d/governor
+    sudo ln -s /etc/init.d/governor /etc/rc2.d/S90governor
+else
+    echo -n "${YEL}Force Processors to Ramp Up at 50% (y/n)? ${NC}"
+    read answer
+    if [ $answer = "y" ]; then
+        echo "${CYN}Forcing Processors to Ramp Up at 50%...${NC}"
+        sudo sh -c 'echo 50 > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold'
+        sudo sh -c 'echo "echo 50 > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold" > /etc/init.d/governor'
+        sudo chmod ugo+rx /etc/init.d/governor
+        sudo ln -s /etc/init.d/governor /etc/rc2.d/S90governor
+    fi
+fi
+
 echo -n "${YEL}Install 64bit Rpi Userland (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
