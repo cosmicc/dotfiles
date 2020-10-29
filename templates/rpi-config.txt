@@ -41,3 +41,4 @@ disable_overscan=1
 # on the IO board (assuming your CM4 is plugged into such a board)
 #dtoverlay=dwc2,dr_mode=host
 nohz=off
+smsc95xx.turbo_mode=N
