@@ -34,11 +34,21 @@ if [ $answer = "y" ]; then
     fi
 fi
 
-echo -n "${YEL}Install & Setup GPSd (y/n)? ${NC}" 
+echo -n "${YEL}Install & Configure GPSd (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then
+    echo "${CYN}Installing & Configuring GPSd...${NC}"
     sudo apt -qq install minicom gpsd gpsd-clients -y
-    
+    sudo cp templates/gpsd /etc/default/gpsd -f
+    sudo systemctl restart gpsd
+fi
+
+echo -n "${YEL}Install & Setup NTPd (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    echo "${CYN}Installing & Configuring NTPd...${NC}"
+    sudo apt -qq install ntp pps-tools -y
+    sudo sh -c 'echo "pps-gpio" > /etc/modules'
     
 fi
 
