@@ -228,3 +228,7 @@ if [ $TRIM = 1 ]; then
     echo "${CYN}Running final TRIM on Drive...${NC}"
     sudo fstrim -v /
 fi
+
+cd dotfiles
+echo "${CYN}You may also want ./harden.sh ./radiotools.sh ./kalitools.sh${NC}"
+echo "${CYN}Complete${NC}"
