@@ -2,9 +2,9 @@
 arm_64bit=1
 max_framebuffers=2
 over_voltage=8
-arm_freq=2147
+arm_freq=2000
 gpu_freq=700
-gpu_mem=256
+gpu_mem=384
 
 dtparam=i2c_arm=on
 #dtparam=i2s=on
