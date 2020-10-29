@@ -107,6 +107,28 @@ if [ $answer = "y" ]; then
     sudo vim +PluginInstall +qall 
 fi
 
+echo -n "${YEL}Configure TRIM support on SSD (y/n)? ${NC}"
+read answer
+if [ $answer = "y" ]; then 
+    TRIM = 1
+    echo "${CYN}Configuring TRIM support...${NC}"
+    sudo apt -qq install sg3-utils lsscsi -y
+    DRIVE = find /sys/ -name provisioning_mode -exec grep -H . {} + | sort
+    echo -n "${YEL}Copy and Paste line Above: ${NC}"
+    read scsiid
+    sudo sh -c 'echo unmap > $scsiid'
+    lsusb
+    echo -n "${YEL}Copy and Paste Vendor ID for SSD (XXXX:123r): ${NC}"
+    read avendor
+    echo -n "${YEL}Copy and Paste Vendor ID for SSD (23e5:XXXX): ${NC}"
+    read aproduct
+    liner = 'ACTION=="add|change", ATTRS{idVendor}==$avendor, ATTRS{idProduct}==$aproduct, SUBSYSTEM=="scsi_disk", ATTR{provisioning_mode}="unmap"'
+    sudo sh -c '$liner > /etc/udev/rules.d/10-trim.rules'
+    sudo systemctl enable fstrim.timer
+    echo "${CYN}Running TRIM on drive...${NC}"
+    sudo fstrim -v /
+fi
+
 echo -n "${YEL}Install Moified Rpi config.txt (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
