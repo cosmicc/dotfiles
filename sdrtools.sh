@@ -587,3 +587,6 @@ if [ $answer = "y" ]; then
         sudo make install
 fi
 
+echo "${CYN}It's suggested to TRIM your SSD after large installs with: sudo fstrim -v /${NC}"
+echo "${CYN}Complete${NC}"
+
