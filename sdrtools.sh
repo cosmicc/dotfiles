@@ -7,8 +7,47 @@ mkdir /opt/build/radio-tools
 echo "${CYN}Installing Prerequisites...${NC}"
 sudo apt -qq install libfftw3-dev libusb-1.0-0-dev libusb-dev qt5-default qtbase5-dev qtchooser libqt5multimedia5-plugins qtmultimedia5-dev libqt5websockets5-dev qttools5-dev qttools5-dev-tools libqt5opengl5-dev qtbase5-dev libqt5quick5 qml-module-qtlocation  qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick-window2 qml-module-qtquick-dialogs qml-module-qtquick-controls qml-module-qtquick-layouts libqt5serialport5-dev qtdeclarative5-dev qtpositioning5-dev qtlocation5-dev libboost-all-dev libasound2-dev pulseaudio libopencv-dev libxml2-dev bison flex ffmpeg libavcodec-dev libavformat-dev libopus-dev doxygen graphviz libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev gr-osmosdr libosmosdr-dev libqt5svg5-dev librtlsdr-dev osmo-sdr portaudio19-dev qt5-default gr-osmosdr gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev libsigc++-2.0-dev libpopt-dev libspeex-dev libopus-dev libgcrypt20-dev tcl tcl-dev sox libwxbase3.0-dev libwxgtk3.0-gtk3-dev libmotif-dev imagemagick gpsman libspeexdsp-dev openjdk-8-jre ax25-tools ax25-apps soundmodem libliquid2d libtinyxml2.6.2v5 soapysdr-module-all jackd libncurses-dev libboost-dev libboost-date-time-dev libboost-system-dev libboost-filesystem-dev libboost-thread-dev libboost-chrono-dev libboost-serialization-dev liblog4cpp5-dev libuhd-dev gnuradio-dev gr-osmosdr libblas-dev liblapack-dev libarmadillo-dev libgflags-dev libgoogle-glog-dev libgnutls-openssl-dev libpcap-dev libmatio-dev libpugixml-dev libgtest-dev libprotobuf-dev protobuf-compiler python3-mako -y
 
-echo "${CYN}Installing Chirp...${NC}"
-sudo apt -qq install chirp -y
+echo -n "${YEL}Install & Setup RPi Hardware Clock (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    sudo i2cdetect -y 1
+    echo "${CYN}You should see a UU address.  If you see a 68 address, the RPi config.txt needs the correct overlay driver loaded.${NC}"
+    echo -n "${YEL}Do you see the hardware clock UU (y/n)? ${NC}" 
+    read answer
+    if [ $answer = "y" ]; then
+        echo "${CYN}Disabling Pseudo Hardware Clock...${NC}"
+        sudo apt-get -y remove fake-hwclock
+        sudo update-rc.d -f fake-hwclock remove
+        sudo systemctl disable fake-hwclock
+        echo -n "${CYN}Current Hardware Clock Value: ${NC}"
+        sudo hwclock -D -r
+        echo -n "${CYN}Current System Clock Value: ${NC}"
+        date
+        echo -n "${YEL}Do you want to set the hardware clock to the system time (y/n)? ${NC}"
+        read answer
+        if [ $answer = "y" ]; then
+            sudo hwclock -w
+        fi
+        sudo cp templates/hwclock-set /usr/lib/udev/hwclock-set -f
+    else
+        echo "${CYN}Fix Hardware clock connection and try again after.${NC}"
+    fi
+fi
+
+echo -n "${YEL}Install & Setup GPSd (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then
+    sudo apt -qq install minicom gpsd gpsd-clients -y
+    
+    
+fi
+
+echo -n "${YEL}Download & Install Chirp (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing Chirp...${NC}"
+    sudo apt -qq install chirp -y
+fi
 
 echo -n "${YEL}Download, Compile & Install Fldigi Suite (y/n)? ${NC}" 
 read answer
