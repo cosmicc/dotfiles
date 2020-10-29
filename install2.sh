@@ -223,3 +223,8 @@ sudo apt -qq full-upgrade -y
 
 echo "${CYN}Removing un-needed packages...${NC}"
 sudo apt -qq  autoremove -y
+
+if [ $TRIM = 1 ]; then
+    echo "${CYN}Running final TRIM on Drive...${NC}"
+    sudo fstrim -v /
+fi
