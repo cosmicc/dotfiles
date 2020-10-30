@@ -49,7 +49,9 @@ if [ $answer = "y" ]; then
     echo "${CYN}Installing & Configuring NTPd...${NC}"
     sudo apt -qq install ntp pps-tools -y
     sudo sh -c 'echo "pps-gpio" > /etc/modules'
+    sudo cp templates/ntp.conf /etc/ntp.conf -f
     
+    sudo systemctl restart ntp
 fi
 
 echo -n "${YEL}Download & Install Chirp (y/n)? ${NC}" 
