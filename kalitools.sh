@@ -51,4 +51,4 @@ git clone --depth 1 https://github.com/v1s1t0r1sh3r3/airgeddon.git /opt/build/wi
 echo "${CYN}Installing Recon Cobra...${NC}" 
 git clone https://github.com/haroonawanofficial/ReconCobra.git /opt/build/sec-tools/reconcobra 1> /dev/null
 
-
+git clone https://github.com/threat9/routersploit.git
