@@ -52,3 +52,5 @@ echo "${CYN}Installing Recon Cobra...${NC}"
 git clone https://github.com/haroonawanofficial/ReconCobra.git /opt/build/sec-tools/reconcobra 1> /dev/null
 
 git clone https://github.com/threat9/routersploit.git
+cd routersploit
+python3 -m pip install -r requirements.txt
