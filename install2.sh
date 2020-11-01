@@ -28,6 +28,14 @@ if [ $answer = "y" ]; then
     ssh-add ~/.ssh/id_rsa
 fi
 
+echo -n "${YEL}Remove All Gnome Packages (y/n)? ${NC}" 
+read answer
+if [ $answer = "y" ]; then    
+    echo "${CYN}Removing Gnome Packages...${NC}"
+    sudo apt -qq remove gnome* -y
+    sudo apt -qq autoremove
+fi
+
 echo "${CYN}Adding Universe Repository...${NC}"
 sudo add-apt-repository universe
 
