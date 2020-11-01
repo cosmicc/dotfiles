@@ -7,8 +7,6 @@ USERNAME=$USER
 sudo chown $USERNAME.$USERNAME /opt -R
 mkdir /opt/build
 
-git config pull.rebase false
-
 echo -n "${YEL}Remove an old user (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then
@@ -44,6 +42,7 @@ sudo apt-get -qq update -y
 
 echo "${CYN}Installing git...${NC}"
 sudo apt -qq install git -y
+git config pull.rebase false
 
 if [ ! -d "dotfiles" ]; then
     echo "${CYN}Cloning Dotfiles...${NC}"
