@@ -28,6 +28,12 @@ if [ $answer = "y" ]; then
     ssh-add ~/.ssh/id_rsa
 fi
 
+echo "${CYN}Adding Universe Repository...${NC}"
+sudo add-apt-repository universe
+
+echo "${CYN}Updating packages...${NC}"
+sudo apt-get -qq update -y
+
 echo "${CYN}Installing git...${NC}"
 sudo apt -qq install git -y
 
@@ -40,12 +46,6 @@ else
     git pull 1> /dev/null
     cd ~
 fi
-
-echo "${CYN}Adding Universe Repository...${NC}"
-sudo add-apt-repository universe
-
-echo "${CYN}Updating packages...${NC}"
-sudo apt-get -qq update -y
 
 echo -n "${YEL}Install ZSH Shell (y/n)? ${NC}" 
 read answer
@@ -87,7 +87,7 @@ echo -n "${YEL}Install Essential Building Packages (y/n)? ${NC}"
 read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Essential Building Packages...${NC}"
-     sudo apt -qq install build-essential make cmake automake pkg-config gcc-aarch64-linux-gnu g++-aarch64-linux-gnu gcc -y
+     sudo apt -qq install build-essential make cmake automake pkg-config gcc-aarch64-linux-gnu g++-aarch64-linux-gnu gcc libncurses-dev ncurses-dev kernel-package libqt3-dev linux-source -y
 fi
 
 echo -n "${YEL}Install VIM (y/n)? ${NC}"
