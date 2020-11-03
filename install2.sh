@@ -29,6 +29,8 @@ fi
 echo -n "${YEL}Remove All Gnome Packages (y/n)? ${NC}" 
 read answer
 if [ $answer = "y" ]; then    
+    echo "${CYN}Shutting down X Session...${NC}"
+    sudo init 3
     echo "${CYN}Removing Gnome Packages...${NC}"
     sudo apt -qq remove gnome* -y
     sudo apt -qq autoremove
