@@ -186,7 +186,7 @@ read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Python Libraries...${NC}"
     sudo apt-get -qq install python3-dev -y
-    sudo pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 maidenhead pyserial gps configparser Rpi.GPIO 1> /dev/null
+    sudo pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 maidenhead pyserial gps configparser RPi.GPIO 1> /dev/null
 fi
 
 echo -n "${YEL}Install Xubuntu-desktop (y/n)? ${NC}"
@@ -200,6 +200,7 @@ if [ $answer = "y" ]; then
 
     echo "${CYN}Extracting Wallpapers...${NC}"
     sudo sh -c "tar xvfz dotfiles/templates/wallpaper.tar.gz -C /usr/share/xfce4/backdrops"
+    sudo chmod ugo+rwx /usr/share/xfce4/backdrops -R
     echo "${CYN}Restoring Xfce Settings...${NC}"
     mkdir ~/.config/xfce4/xfconf/xfce-perchannel-xml -p
     tar xvfz dotfiles/templates/settings.tar.gz -C ~/.config/xfce4/xfconf/xfce-perchannel-xml
