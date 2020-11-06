@@ -99,7 +99,7 @@ fi
 count=1
 while [ $count -le $attempts ]; do
     echo "${CYN}Installing Essential System Packages (Attempt #$count)...${NC}"
-    sudo sh -c "apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server dos2unix -y >> $logfile 2>&1"
+    sudo sh -c "apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server dos2unix ucommon-utils -y >> $logfile 2>&1"
     if [ $? -ne 0 ]; then
         if [ $count -eq $attempts ]; then
             echo "Critical Install Error! See: $logfile"

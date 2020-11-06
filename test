@@ -1,0 +1,13 @@
+cd $1
+LOCAL=`git rev-parse HEAD`
+REMOTE=`git ls-remote | grep HEAD`
+echo '-----'
+LOCAL2="${LOCAL##*$'\n'}"
+REMOTE2="${LOCAL##*$' '}"
+echo $LOCAL2
+echo $REMOTE2
+if [ $LOCAL2 = $REMOTE2 ]; then
+    echo "SAME"
+else
+    echo "DIFF"
+fi    
