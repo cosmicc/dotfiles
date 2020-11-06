@@ -9,12 +9,30 @@ logdir=/opt/
 logfile=/opt/sdrtools.log
 attempts=5
 
+# compare files
+comp_files () {
+    file1=`md5sum $1`
+    file2=`md5sum $2`
+    file3=`echo $file2 | sed -r 's/(.{32}).*/\1/'`
+    file4=`echo $file1 | sed -r 's/(.{32}).*/\1/'`
+    if [ $file3 = $file4 ]; then
+        return 58
+    else
+        return 21
+    fi
+}
+
+
 # check_update /dir giturl
 check_update () {
-    echo -n "${CYN}Checking for $3 Updates...  ${NC}"
+    echo -n "${CYN}Checking for $3 Updates "
     if [ -d $1 ]; then
         cd $1
-        if [ $(git rev-parse HEAD) = $(git ls-remote $(git rev-parse --abbrev-ref @{u} | sed 's/\// /g') | cut -f1) ]; then
+        LOCAL=`git rev-parse HEAD`
+        REMOTE=`git ls-remote | grep HEAD`
+        LOCAL2="${LOCAL##*$'\n'}"
+        REMOTE2=`echo $REMOTE | cut -d' ' -f 1` 
+        if [ $LOCAL2 = $REMOTE2 ]; then
             echo "${CYN}No Updates Available.${NC}"
             return 58
         else
@@ -242,23 +260,21 @@ echo "${CYN}Installing $appname Prerequisites...${NC}"
 touch $logdir$appname.log
 sudo sh -c "apt -qq install mono-complete -y >> $logdir$appname.log 2>&1"
 echo "${CYN}Checking For $appname Updates...${NC}"
+cd $radiodir
 wget http://www.virtualradarserver.co.uk/Files/VirtualRadar.tar.gz >> $logdir$appname.log 2>&1
 if [ -f /opt/downloads/VirtualRadar.tar.gz ]; then
-    file1=`md5sum VirtualRadar.tar.gz`
-    file2=`md5sum /opt/downloads/VirtualRadar.tar.gz`
-    echo ${file1:0:10}
-    echo ${file2:0:10}
-    if [ ${file1:0:10} = ${file2:0:10} ]; then
+    comp_files $radiodir/VirtualRadar.tar.gz /opt/downloads/VirtualRadar.tar.gz
+    if [ $? = 58 ]; then
         echo "${CYN}$appname Has no Updates Available...${NC}"
-        rm -f VirtualRadar.tar.gz
+        rm -f $radiodir/VirtualRadar.tar.gz
         INST=0
     else
         echo "${CYN}$appname New Version Available!${NC}"
-        mv -f VirtualRadar.tar.gz /opt/downloads
+        mv -f $radiodir/VirtualRadar.tar.gz /opt/downloads
         INST=1
     fi    
 else
-    mv -f VirtualRadar.tar.gz /opt/downloads
+    mv -f $radiodir/VirtualRadar.tar.gz /opt/downloads
     INST=1
 fi    
 if [ $INST -eq 1 ]; then
@@ -363,22 +379,22 @@ fi
 
 appname=yaac # 
 echo "${CYN}Checking For $appname Updates...${NC}"
+cd $radiodir
 wget -r -nd --no-parent -A '*.tmp' https://sourceforge.net/projects/yetanotheraprsc/files/latest/download >> $logdir$appname.log 2>&1
 if [ -f /opt/downloads/yaac.zip ]; then
-    file1=`md5sum download.tmp`
-    file2=`md5sum /opt/downloads/yaac.zip`
-    if [ $file1 = $file2 ]; then
+    comp_files $radiodir/download.tmp /opt/downloads/yaac.zip
+    if [ $? = 58 ]; then
         echo "${CYN}$appname Has no Updates Available...${NC}"
-        rm -f download.tmp
+        rm -f $radiodir/download.tmp
         INST=0
     else
         echo "${CYN}$appname New Version Available!${NC}"
-        mv -f download.tmp /opt/downloads/yaac.zip
+        mv -f $radiodir/download.tmp /opt/downloads/yaac.zip
         rm -rf $appdir/$appname
         INST=1
     fi    
 else
-    mv -f download.tmp /opt/downloads/yaac.zip
+    mv -f $radiodir/download.tmp /opt/downloads/yaac.zip
     INST=1
 fi    
 if [ $INST -eq 1 ]; then
