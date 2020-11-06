@@ -1,5 +1,5 @@
 
-My OS configuration setup files.
+RPi configuration setup files.
 
 ## Installation
 
