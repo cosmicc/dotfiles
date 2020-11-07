@@ -57,6 +57,6 @@ if [ $answer = "y" ]; then
     sudo su $username
 else
     sudo wget https://raw.githubusercontent.com/cosmicc/dotfiles/main/install2.sh
-    install2.sh
+    sh install2.sh
 fi    
     
