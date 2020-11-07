@@ -79,21 +79,20 @@ if [ $answer = "y" ]; then
     sh ./zmginstall.sh >> $logfile 2>&1
     rm ./zmginstall.sh -f
     
-    if [ ! -f "/etc/zsh/zshrc" ]; then
-        sudo cp ~/.zshrc /etc/zsh/zshrc
-    fi
+if [ ! -f "/etc/zsh/zshrc" ]; then
+    sudo cp ~/.zshrc /etc/zsh/zshrc
+fi
 
-    if [ ! -f "/etc/zsh/dircolors" ]; then
-        echo "${CYN}Installing Directory Colors...${NC}"
-        sudo cp rpisetup/templates/LS_COLORS /etc/zsh/dircolors
-        sudo sh -c 'echo "test -r /etc/zsh/dircolors && eval \"\$(dircolors -b /etc/zsh/dircolors)\" || eval \"\$(dircolors -b)]\"" >> /etc/zsh/zshrc'
-    fi
+if [ ! -f "/etc/zsh/dircolors" ]; then
+    echo "${CYN}Installing Directory Colors...${NC}"
+    sudo cp rpisetup/templates/LS_COLORS /etc/zsh/dircolors
+    sudo sh -c 'echo "test -r /etc/zsh/dircolors && eval \"\$(dircolors -b /etc/zsh/dircolors)\" || eval \"\$(dircolors -b)]\"" >> /etc/zsh/zshrc'
+fi
 
-    if [ ! -f "/etc/zsh/promptline.sh" ]; then 
-        echo "${CYN}Installing Promptline...${NC}"
-        sudo cp rpisetup/templates/promptline.sh /etc/zsh/promptline.sh
-        sudo sh -c 'echo "source /etc/zsh/promptline.sh" >> /etc/zsh/zshrc'
-    fi
+if [ ! -f "/etc/zsh/promptline.sh" ]; then 
+    echo "${CYN}Installing Promptline...${NC}"
+    sudo cp rpisetup/templates/promptline.sh /etc/zsh/promptline.sh
+    sudo sh -c 'echo "source /etc/zsh/promptline.sh" >> /etc/zsh/zshrc'
 fi
 
 count=1
