@@ -78,7 +78,8 @@ if [ $answer = "y" ]; then
     echo "${YEL}TYPE EXIT AFTER OMZSH INSTALL TO CONTINUE${NC}"
     sh ./zmginstall.sh >> $logfile 2>&1
     rm ./zmginstall.sh -f
-    
+fi
+
 if [ ! -f "/etc/zsh/zshrc" ]; then
     sudo cp ~/.zshrc /etc/zsh/zshrc
 fi
