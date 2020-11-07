@@ -1,3 +1,5 @@
+#!/bin/env sh
+
 GRN='\033[1;32m'
 CYN='\033[1;36m'
 MGT='\033[1;35m'
@@ -9,6 +11,19 @@ logdir=/opt/
 logfile=/opt/install2.log
 USERNAME=$USER
 TRIM=0
+
+# compare files
+comp_files () {
+    file1=`md5sum $1`
+    file2=`md5sum $2`
+    file3=`echo $file2 | sed -r 's/(.{32}).*/\1/'`
+    file4=`echo $file1 | sed -r 's/(.{32}).*/\1/'`
+    if [ $file3 = $file4 ]; then
+        return 58
+    else
+        return 21
+    fi
+}
 
 echo "${YEL}Starting the RPi Setup Installer!${NC}"
 
@@ -79,28 +94,28 @@ if [ $answer = "y" ]; then
     echo "${YEL}TYPE EXIT AFTER OMZSH INSTALL TO CONTINUE${NC}"
     sh ./zmginstall.sh >> $logfile 2>&1
     rm ./zmginstall.sh -f
+    sudo usermod -s /bin/zsh $USERNAME
+    sudo usermod -s /bin/zsh root
 fi
 
 if [ ! -f "/etc/zsh/zshrc" ]; then
-    sudo cp ~/.zshrc /etc/zsh/zshrc
+    sudo cp /opt/rpisetup/templates/zshrc /etc/zsh/zshrc -f
 fi
 
 if [ ! -f "/etc/zsh/dircolors" ]; then
     echo "${CYN}Installing Directory Colors...${NC}"
     sudo cp /opt/rpisetup/templates/LS_COLORS /etc/zsh/dircolors
-    sudo sh -c 'echo "test -r /etc/zsh/dircolors && eval \"\$(dircolors -b /etc/zsh/dircolors)\" || eval \"\$(dircolors -b)]\"" >> /etc/zsh/zshrc'
 fi
 
 if [ ! -f "/etc/zsh/promptline.sh" ]; then 
     echo "${CYN}Installing Promptline...${NC}"
     sudo cp /opt/rpisetup/templates/promptline.sh /etc/zsh/promptline.sh
-    sudo sh -c 'echo "source /etc/zsh/promptline.sh" >> /etc/zsh/zshrc'
 fi
 
 count=1
 while [ $count -le $attempts ]; do
     echo "${CYN}Installing Essential System Packages (Attempt #$count)...${NC}"
-    sudo sh -c "apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server dos2unix ucommon-utils -y >> $logfile 2>&1"
+    sudo sh -c "apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server dos2unix ucommon-utils python3-gpiozero -y >> $logfile 2>&1"
     if [ $? -ne 0 ]; then
         if [ $count -eq $attempts ]; then
             echo "Critical Install Error! See: $logfile"
@@ -133,11 +148,11 @@ if [ $answer = "y" ]; then
     done
 fi
 
-if [ ! -d ~/.vim/bundle/Vundle.vim ] || [ ! -d ~/.vim/colors ]; then 
+if [ ! -d ~/.vim/bundle/Vundle.vim ] || [ ! -d ~/.vim/colors ] || [ ! -d ~/.vimrc ]; then 
     echo "${CYN}Installing VIM...${NC}"
     sudo sh -c "apt-get -qq install vim -y >> $logfile 2>&1"
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim >> $logfile 2>&1
-    sudo git clone https://github.com/VundleVim/Vundle.vim.git /root/.vim/bundle/Vundle.vim >> $logfile 2>&1
+    sudo sh -c "git clone https://github.com/VundleVim/Vundle.vim.git /root/.vim/bundle/Vundle.vim >> $logfile 2>&1"
     cp /opt/rpisetup/templates/vimrc ~/.vimrc
     sudo cp /opt/rpisetup/templates/vimrc /root/.vimrc
     mkdir ~/.vim/colors
@@ -154,25 +169,24 @@ if [ $answer = "y" ]; then
     TRIM=1
     echo "${CYN}Configuring TRIM support...${NC}"
     sudo sh -c "apt -qq install sg3-utils lsscsi -y >> $logfile 2>&1"
-    DRIVE = find /sys/ -name provisioning_mode -exec grep -H . {} + | sort
+    sudo sh -c "find /sys/ -name provisioning_mode -exec grep -H . {} + | sort"
     echo -n "${YEL}Copy and Paste line Above: ${NC}"
     read scsiid
     sudo sh -c 'echo unmap > $scsiid'
-    lsusb
+    sudo lsusb
     echo -n "${YEL}Copy and Paste Vendor ID for SSD (XXXX:123r): ${NC}"
     read avendor
     echo -n "${YEL}Copy and Paste Vendor ID for SSD (23e5:XXXX): ${NC}"
     read aproduct
-    liner = 'ACTION=="add|change", ATTRS{idVendor}==$avendor, ATTRS{idProduct}==$aproduct, SUBSYSTEM=="scsi_disk", ATTR{provisioning_mode}="unmap"'
+    liner='ACTION=="add|change", ATTRS{idVendor}==$avendor, ATTRS{idProduct}==$aproduct, SUBSYSTEM=="scsi_disk", ATTR{provisioning_mode}="unmap"'
     sudo sh -c '$liner > /etc/udev/rules.d/10-trim.rules'
     sudo sh -c "systemctl enable fstrim.timer >> $logfile 2>&1"
     echo "${CYN}Running TRIM on drive...${NC}"
-    sudo fstrim -v /
+    sudo sh -c "fstrim -v /"
 fi
 
-file1=`md5 /opt/rpisetup/templates/rpi-config.txt`
-file2=`md5 /boot/firmware/config.txt`
-if [ $file1 = $file2 ]; then 
+comp_files /opt/rpisetup/templates/rpi-config.txt /boot/firmware/config.txt
+if [ $? = 58 ]; then 
     echo "${CYN}Modified RPi config.txt already in place...${NC}"
 else
     echo "${CYN}Installing Modified RPi config.txt...${NC}"
@@ -255,7 +269,7 @@ if [ $answer = "y" ]; then
     count=1
     while [ $count -le $attempts ]; do
         echo "${CYN}Installing Xubuntu-desktop Apps (Attempt #$count)...${NC}"
-    sudo sh -c "apt -qq install app-install-data-partner gparted network-manager-openconnect-gnome network-manager-openvpn-gnome network-manager-vpnc-gnome t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi ttf-mscorefonts-installer fonts-firacode fonts-noto chromium-browser mugshot blueman bluez catfish desktop-file-utils evince espeak file-roller firefox fwupd fwupdate gigolo gnome-calculator gnome-software gnome-system-tools indicator-application indicator-messages indicator-sound inxi libnotify-bin libnss-mdns libpam-gnome-keyring libxfce4ui-utils light-locker lightdm-gtk-greeter-settings menulibre network-manager-gnome onboard pavucontrol ristretto software-properties-gtk speech-dispatcher thunar-archive-plugin thunar-media-tags-plugin transmission-gtk ttf-ubuntu-font-family update-notifier xcursor-themes xfce4-cpugraph-plugin xfce4-dict xfce4-indicator-plugin xfce4-netload-plugin xfce4-places-plugin xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal xfce4-verve-plugin xfce4-whiskermenu-plugin xfpanel-switch xul-ext-ubufox terminator notepadqq vlc -y >> $logfile 2>&1"
+    sudo sh -c "apt -qq install app-install-data-partner gparted network-manager-openconnect-gnome network-manager-openvpn-gnome network-manager-vpnc-gnome t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi ttf-mscorefonts-installer fonts-firacode fonts-noto chromium-browser mugshot blueman bluez catfish desktop-file-utils evince espeak file-roller firefox fwupd fwupdate gigolo gnome-calculator gnome-software gnome-system-tools indicator-application indicator-messages indicator-sound inxi libnotify-bin libnss-mdns libpam-gnome-keyring libxfce4ui-utils light-locker lightdm-gtk-greeter-settings menulibre network-manager-gnome onboard pavucontrol ristretto software-properties-gtk speech-dispatcher thunar-archive-plugin thunar-media-tags-plugin transmission-gtk ttf-ubuntu-font-family update-notifier xcursor-themes xfce4-cpugraph-plugin xfce4-dict xfce4-indicator-plugin xfce4-netload-plugin xfce4-places-plugin xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal xfce4-verve-plugin xfce4-whiskermenu-plugin xfpanel-switch xul-ext-ubufox terminator notepadqq vlc -y"
         if [ $? -ne 0 ]; then
             if [ $count -eq $attempts ]; then
                 echo "Critical Install Error! See: $logfile"
@@ -321,6 +335,6 @@ if [ $TRIM -eq 1 ]; then
     sudo fstrim -v /
 fi
 
-cd rpisetup
+cd /opt/rpisetup
 echo "${YEL}You may also want ./harden.sh ./radiotools.sh ./kalitools.sh${NC}"
 echo "${GRN}Install Complete${NC}"
