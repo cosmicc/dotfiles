@@ -85,13 +85,13 @@ if [ $answer = "y" ]; then
 
     if [ ! -f "/etc/zsh/dircolors" ]; then
         echo "${CYN}Installing Directory Colors...${NC}"
-        sudo cp dotfiles/LS_COLORS /etc/zsh/dircolors
+        sudo cp rpisetup/templates/LS_COLORS /etc/zsh/dircolors
         sudo sh -c 'echo "test -r /etc/zsh/dircolors && eval \"\$(dircolors -b /etc/zsh/dircolors)\" || eval \"\$(dircolors -b)]\"" >> /etc/zsh/zshrc'
     fi
 
     if [ ! -f "/etc/zsh/promptline.sh" ]; then 
         echo "${CYN}Installing Promptline...${NC}"
-        sudo cp dotfiles/promptline.sh /etc/zsh/promptline.sh
+        sudo cp rpisetup/templates/promptline.sh /etc/zsh/promptline.sh
         sudo sh -c 'echo "source /etc/zsh/promptline.sh" >> /etc/zsh/zshrc'
     fi
 fi
@@ -137,12 +137,12 @@ if [ ! -d ~/.vim/bundle/Vundle.vim ] || [ ! -d ~/.vim/colors ]; then
     sudo sh -c "apt-get -qq install vim -y >> $logfile 2>&1"
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim >> $logfile 2>&1
     sudo git clone https://github.com/VundleVim/Vundle.vim.git /root/.vim/bundle/Vundle.vim >> $logfile 2>&1
-    cp dotfiles/vimrc ~/.vimrc
-    sudo cp dotfiles/vimrc /root/.vimrc
+    cp rpisetup/templates/vimrc ~/.vimrc
+    sudo cp rpisetup/templates/vimrc /root/.vimrc
     mkdir ~/.vim/colors
     sudo mkdir /root/.vim/colors
-    cp dotfiles/sublimemonokai.vim ~/.vim/colors
-    sudo cp dotfiles/sublimemonokai.vim /root/.vim/colors
+    cp rpisetup/templates/sublimemonokai.vim ~/.vim/colors
+    sudo cp rpisetup/templates/sublimemonokai.vim /root/.vim/colors
     vim +PluginInstall +qall
     sudo vim +PluginInstall +qall 
 fi
@@ -169,13 +169,13 @@ if [ $answer = "y" ]; then
     sudo fstrim -v /
 fi
 
-file1=`md5 dotfiles/templates/rpi-config.txt`
+file1=`md5 rpisetup/templates/rpi-config.txt`
 file2=`md5 /boot/firmware/config.txt`
 if [ $file1 = $file2 ]; then 
     echo "${CYN}Modified RPi config.txt already in place...${NC}"
 else
     echo "${CYN}Installing Modified RPi config.txt...${NC}"
-    sudo cp dotfiles/templates/rpi-config.txt /boot/firmware/config.txt -f
+    sudo cp rpisetup/templates/rpi-config.txt /boot/firmware/config.txt -f
 fi
 
 SG=`sudo cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
@@ -271,7 +271,7 @@ if [ $answer = "y" ]; then
     sudo chmod ugo+rwx /usr/share/xfce4/backdrops -R
     echo "${CYN}Restoring Xfce Settings...${NC}"
     mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml
-    tar xvfz dotfiles/templates/settings.tar.gz -C ~/.config/xfce4/xfconf/xfce-perchannel-xml >> $logfile 2>&1
+    tar xvfz rpisetup/templates/settings.tar.gz -C ~/.config/xfce4/xfconf/xfce-perchannel-xml >> $logfile 2>&1
 fi
 
 echo -n "${YEL}Remove Games (y/n)? ${NC}"
