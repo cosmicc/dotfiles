@@ -75,7 +75,7 @@ sudo chown sdr.sdr /opt/build -R
 touch $logfile
 
 count=1
-echo "${CYN}Updating OS Packages (Attempt #$count)...${NC}"
+echo -n "${CYN}Updating OS Packages (Attempt #$count)...${NC}"
 while [ $count -le $attempts ]; do
     sudo sh -c "apt -qq update -y > $logfile 2>&1"
     if [ $? -ne 0 ]; then
@@ -84,11 +84,12 @@ while [ $count -le $attempts ]; do
         count=99
     fi
 done
+echo "${GRN}Complete.${NC}"
 
 count=1
 echo "${CYN}Verifying & Installing Prerequisites (Attempt #$count)...${NC}"
 while [ $count -le $attempts ]; do
-    sudo sh -c "apt -qq install libfftw3-dev libusb-1.0-0-dev libusb-dev qt5-default qtbase5-dev qtchooser libqt5multimedia5-plugins qtmultimedia5-dev libqt5websockets5-dev qttools5-dev qttools5-dev-tools libqt5opengl5-dev qtbase5-dev libqt5quick5 qml-module-qtlocation  qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick-window2 qml-module-qtquick-dialogs qml-module-qtquick-controls qml-module-qtquick-layouts libqt5serialport5-dev qtdeclarative5-dev qtpositioning5-dev qtlocation5-dev libboost-all-dev libasound2-dev pulseaudio libopencv-dev libxml2-dev bison flex ffmpeg libavcodec-dev libavformat-dev libopus-dev doxygen graphviz libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev libqt5svg5-dev portaudio19-dev qt5-default gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev libsigc++-2.0-dev libpopt-dev libspeex-dev libopus-dev libgcrypt20-dev tcl tcl-dev sox libwxbase3.0-dev libwxgtk3.0-gtk3-dev libmotif-dev imagemagick gpsman libspeexdsp-dev openjdk-8-jre ax25-tools ax25-apps soundmodem libliquid2d libtinyxml2.6.2v5 jackd libncurses-dev libboost-dev libboost-date-time-dev libboost-system-dev libboost-filesystem-dev libboost-thread-dev libboost-chrono-dev libboost-serialization-dev liblog4cpp5-dev libuhd-dev libblas-dev liblapack-dev libarmadillo-dev libgflags-dev libgoogle-glog-dev libgnutls-openssl-dev libpcap-dev libmatio-dev libpugixml-dev libgtest-dev libprotobuf-dev protobuf-compiler python3-mako libwxgtk-webview3.0-gtk3-dev libgtk-3-dev libbz2-dev exif libarchive-dev libsndfile1-dev portaudio19-dev gettext sqlite3 libsqlite3-dev libcurl4-openssl-dev libtinyxml-dev libexif-dev liblzma-dev liblz4-dev libao-dev i2c-tools asciidoctor subversion texinfo asciidoc-base libjsoncpp-dev libi2c-dev libusb-1.0-0-dev gnuplot libsensors4-dev libfaad-dev libmpg123-dev libmpg123-dev libfftw3-dev librtlsdr-dev libusb-1.0-0-dev mesa-common-dev libglu1-mesa-dev libpulse-dev libairspy-dev libmp3lame-dev libliquid-dev swig gr-osmosdr -y"
+    sudo sh -c "apt -qq install libfftw3-dev libusb-1.0-0-dev libusb-dev qt5-default qtbase5-dev qtchooser libqt5multimedia5-plugins qtmultimedia5-dev libqt5websockets5-dev qttools5-dev qttools5-dev-tools libqt5opengl5-dev qtbase5-dev libqt5quick5 qml-module-qtlocation  qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick-window2 qml-module-qtquick-dialogs qml-module-qtquick-controls qml-module-qtquick-layouts libqt5serialport5-dev qtdeclarative5-dev qtpositioning5-dev qtlocation5-dev libboost-all-dev libasound2-dev pulseaudio libopencv-dev libxml2-dev bison flex ffmpeg libavcodec-dev libavformat-dev libopus-dev doxygen graphviz libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev libqt5svg5-dev portaudio19-dev qt5-default gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev libsigc++-2.0-dev libpopt-dev libspeex-dev libopus-dev libgcrypt20-dev tcl tcl-dev sox libwxbase3.0-dev libwxgtk3.0-gtk3-dev libmotif-dev imagemagick gpsman libspeexdsp-dev openjdk-8-jre ax25-tools ax25-apps soundmodem libliquid2d libtinyxml2.6.2v5 jackd libncurses-dev libboost-dev libboost-date-time-dev libboost-system-dev libboost-filesystem-dev libboost-thread-dev libboost-chrono-dev libboost-serialization-dev liblog4cpp5-dev libuhd-dev libblas-dev liblapack-dev libarmadillo-dev libgflags-dev libgoogle-glog-dev libgnutls-openssl-dev libpcap-dev libmatio-dev libpugixml-dev libgtest-dev libprotobuf-dev protobuf-compiler python3-mako libwxgtk-webview3.0-gtk3-dev libgtk-3-dev libbz2-dev exif libarchive-dev libsndfile1-dev portaudio19-dev gettext sqlite3 libsqlite3-dev libcurl4-openssl-dev libtinyxml-dev libexif-dev liblzma-dev liblz4-dev libao-dev i2c-tools asciidoctor subversion texinfo asciidoc-base libjsoncpp-dev libi2c-dev libusb-1.0-0-dev gnuplot libsensors4-dev libfaad-dev libmpg123-dev libmpg123-dev libfftw3-dev librtlsdr-dev libusb-1.0-0-dev mesa-common-dev libglu1-mesa-dev libpulse-dev libairspy-dev libmp3lame-dev libliquid-dev swig gr-osmosdr libaudiofile-dev libgd-dev groff libax25-dev -y"
     if [ $? -ne 0 ]; then
         ((count=count+1))
     else
@@ -97,7 +98,7 @@ while [ $count -le $attempts ]; do
 done
 
 count=1
-echo "${CYN}Upgrading OS Packages (Attempt #$count)...${NC}"
+echo -n "${CYN}Upgrading OS Packages (Attempt #$count)...${NC}"
 while [ $count -lt $attempts ]; do
     sudo sh -c "apt -qq upgrade -y >> $logfile 2>&1"
     if [ $? -ne 0 ]; then
@@ -106,6 +107,8 @@ while [ $count -lt $attempts ]; do
         count=99
     fi
 done
+echo "${GRN}Complete.${NC}"
+
 
 echo -n "${YEL}Install & Setup RPi Hardware Clock (y/n)? ${NC}"
 read answer
@@ -155,21 +158,80 @@ if [ $answer = "y" ]; then
     sudo systemctl restart ntp
 fi
 
+###### APT PACKAGE INSTALLS ######
+
+echo -n "${CYN}Installing Antenna & Signal Propigation Packages (Attempt #$count)...${NC}"
+while [ $count -lt $attempts ]; do
+    sudo sh -c "apt -qq install antennavis gsmc nec2c xnec2c xnecview yagiuda splat -y >> $logfile 2>&1"
+    if [ $? -ne 0 ]; then
+        ((count=count+1))
+    else
+        count=99
+    fi
+done
+echo "${GRN}Complete.${NC}"
+
+echo -n "${CYN}Installing CW Packages (Attempt #$count)...${NC}"
+while [ $count -lt $attempts ]; do
+    sudo sh -c "apt -qq install xdemorse libcw6 cw cwcp xcwcp morse morse-x aldo glfr extra-xdg-menus qrq morse2ascii -y >> $logfile 2>&1"
+    if [ $? -ne 0 ]; then
+        ((count=count+1))
+    else
+        count=99
+    fi
+done
+echo "${GRN}Complete.${NC}"
+
+echo -n "${CYN}Installing Radio Logging Packages (Attempt #$count)...${NC}"
+while [ $count -lt $attempts ]; do
+    sudo sh -c "apt -qq install wwl xlog xdx tlf klog -y >> $logfile 2>&1"
+    if [ $? -ne 0 ]; then
+        ((count=count+1))
+    else
+        count=99
+    fi
+done
+echo "${GRN}Complete.${NC}"
+
+
+
+
 ###### PYTHON3 INSTALLS ######
+
+echo -n "${CYN}Installing Python Prerequisites...${NC}"
+sudo sh -c "ln -s /usr/bin/python3 /usr/bin/python >> $logfile 2>&1"
+sudo sh -c "pip3 install bitstring libusb numpy cython matplotlib >> $logfile 2>&1"
+echo "${GRN}Complete.${NC}"
 
 echo -n "${CYN}Installing Universal Radio Hacker...${NC}"
 sudo sh -c "pip3 install cython  >> $logfile 2>&1"
 sudo sh -c "pip3 install urh --upgrade  >> $logfile 2>&1"
 echo "${GRN}Complete.${NC}"
 
-echo -n "${CYN}Installing Universal Radio Hacker...${NC}"
-sudo sh -c "pip3 install bitstring libusb numpy matplotlib >> $logfile 2>&1"
-https://github.com/atlas0fd00m/rfcat.git
-
-
 ######## GIT INSTALLS ########
 
-appname=soapysdr #
+appname=hamlib # Amateur Radio Libraries
+git_check $radiodir/$appname https://github.com/Hamlib/Hamlib.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    ./bootstrap >> $logdir$appname.log 2>&1
+    ./configure --with-python-binding >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+
+appname=soapysdr # API and runtime library for interfacing with SDR devices
 git_check $radiodir/$appname https://github.com/pothosware/SoapySDR.git $appname
 if [ $? = 21 ]; then
     echo -n "${CYN}Preparing...${NC}"
@@ -364,7 +426,7 @@ if [ $? = 21 ]; then
         rm -rf $radiodir/$appname/build
     fi    
     mkdir build && cd build
-    cmake -DCMAKE_BUILD_TYPE=Release -DUSE_HAMLIB=1 -DwxWidgets_CONFIG_EXECUTABLE=~/usr/lib/wxWidgets-staticlib/bin/wx-config ../ >> $logdir$appname.log 2>&1
+    cmake -DCMAKE_BUILD_TYPE=Release -DUSE_HAMLIB=1 -DwxWidgets_CONFIG_EXECUTABLE=/usr/lib/wxWidgets-staticlib/bin/wx-config ../ >> $logdir$appname.log 2>&1
     echo -n "${CYN}Compiling...${NC}"
     make -j4 >> $logdir$appname.log 2>&1
     echo -n "${CYN}Installing...${NC}"
@@ -377,8 +439,6 @@ if [ $? = 21 ]; then
         sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
     fi    
 fi
-
-
 
 appname=gr-rtlsdr # GNU radio RTL-SDR Plugin
 git_check $radiodir/$appname git://git.osmocom.org/gr-osmosdr $appname
@@ -401,6 +461,46 @@ if [ $? = 21 ]; then
         echo "${GRN}Complete.${NC}"
         sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
         sudo sh -c "make install-udev-rules >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=hamfax # Fax over RF
+git_check $radiodir/$appname https://github.com/AlexandriaOL/hamfax-qt5.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    autoreconf -f -i
+    ./configure
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=aprsdigi # Amateur Packet Radio (AX.25) UI-frame digipeater for APRS
+git_check $radiodir/$appname https://github.com/n2ygk/aprsdigi.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    autoreconf -f -i
+    ./configure
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
     fi    
 fi
 
