@@ -6,9 +6,22 @@ CYN='\033[1;36m'
 MGT='\033[1;35m'
 NC='\033[0m'
 
-wifidir=/opt/wifiapps
+wifidir=/opt/wifitools
 logdir=/opt/logs
 logfile=/opt/logs/wifitools.log
+
+escape_slashes () {
+    sed 's/\//\\\//g'
+}
+
+change_line () {
+    local OLD_LINE_PATTERN=$1; shift
+    local NEW_LINE=$1; shift
+    local FILE=$1
+    local NEW=$(echo "${NEW_LINE}" | escape_slashes)
+    sed -i .bak '/'"${OLD_LINE_PATTERN}"'/s/.*/'"${NEW}"'/' "${FILE}"
+    mv "${FILE}.bak" /tmp/
+}
 
 git_check () {
     echo -n "${CYN}Checking ${MGT}$3${CYN}...${NC}"
@@ -36,10 +49,11 @@ git_check () {
     fi
 }
 
-echo "${YEL}Starting Wifi/Bluetooth Application Installer!${NC}"
+echo "${YEL}Starting Kali Application Installer!${NC}"
+echo "Starting Kali Tools Installer - `date`" > $logfile
 
 if [ ! -d $wifidir ]; then
-    echo "${MGT}Wifiapps Directory doesn't exist, creating.${NC}"
+    echo "${MGT}Kalitools Directory doesn't exist, creating.${NC}"
     mkdir -p $wifidir
 fi
 
@@ -76,198 +90,3 @@ if [ $answer = "y" ]; then
         sudo apt -qq install acccheck ace-voip amap automater braa casefile cdpsnarf cisco-torch cookie-cadger copy-router-config dmitry dnmap dnsenum dnsmap dnsrecon dnstracer dnswalk dotdotpwn enum4linux enumiax exploitdb fierce firewalk fragroute fragrouter ghost-phisher golismero goofile lbd maltego-teeth masscan metagoofil miranda nmap p0f parsero recon-ng set smtp-user-enum snmpcheck sslcaudit sslsplit sslstrip sslyze thc-ipv6 theharvester tlssled twofi urlcrazy wireshark wol-e xplico ismtp intrace hping3 bbqsql bed cisco-auditing-tool cisco-global-exploiter cisco-ocs cisco-torch copy-router-config doona dotdotpwn greenbone-security-assistant hexorbase jsql lynis nmap ohrwurm openvas-cli openvas-manager openvas-scanner oscanner powerfuzzer sfuzz sidguesser siparmyknife sqlmap sqlninja sqlsus thc-ipv6 tnscmd10g unix-privesc-check yersinia aircrack-ng asleap bluelog blueranger bluesnarfer bully cowpatty crackle eapmd5pass fern-wifi-cracker ghost-phisher giskismet gqrx kalibrate-rtl killerbee kismet mdk3 mfcuk mfoc mfterm multimon-ng pixiewps reaver redfang spooftooph wifi-honey wifitap apache-users arachni bbqsql blindelephant burpsuite cutycapt davtest deblaze dirb dirbuster fimap funkload grabber jboss-autopwn joomscan jsql maltego-teeth padbuster paros parsero plecost powerfuzzer proxystrike recon-ng skipfish sqlmap sqlninja sqlsus ua-tester uniscan vega w3af webscarab websploit wfuzz wpscan xsser zaproxy burpsuite dnschef fiked hamster-sidejack hexinject iaxflood inviteflood ismtp mitmproxy ohrwurm protos-sip rebind responder rtpbreak rtpinsertsound rtpmixsound sctpscan siparmyknife sipp sipvicious sniffjoke sslsplit sslstrip thc-ipv6 voiphopper webscarab wifi-honey wireshark xspy yersinia zaproxy cryptcat cymothoa dbd dns2tcp http-tunnel httptunnel intersect nishang polenum powersploit pwnat ridenum sbd u3-pwn webshells weevely casefile cutycapt dos2unix dradis keepnote magictree metagoofil nipper-ng pipal armitage backdoor-factory cisco-auditing-tool cisco-global-exploiter cisco-ocs cisco-torch crackle jboss-autopwn linux-exploit-suggester maltego-teeth set shellnoob sqlmap thc-ipv6 yersinia beef-xss binwalk bulk-extractor chntpw cuckoo dc3dd ddrescue dumpzilla extundelete foremost galleta guymager iphone-backup-analyzer p0f pdf-parser pdfid pdgmail peepdf volatility xplico dhcpig funkload iaxflood inviteflood ipv6-toolkit mdk3 reaver rtpflood slowhttptest t50 termineter thc-ipv6 thc-ssl-dos acccheck burpsuite cewl chntpw cisco-auditing-tool cmospwd creddump crunch findmyhash gpp-decrypt hash-identifier hexorbase john johnny keimpx maltego-teeth maskprocessor multiforcer ncrack oclgausscrack pack patator polenum rainbowcrack rcracki-mt rsmangler statsprocessor thc-pptp-bruter truecrack webscarab wordlists zaproxy apktool dex2jar python-distorm3 edb-debugger jad javasnoop jd ollydbg smali valgrind yara android-sdk apktool arduino dex2jar sakis3g smali hping nmap nikto
     fi
 fi    
-
-echo "${CYN}Installing Tools Prerequisites...${NC}" 
-sudo apt -qq install net-tools libtool pkg-config libnl-3-dev libnl-genl-3-dev libssl-dev ethtool shtool rfkill zlib1g-dev libpcap-dev libsqlite3-dev libpcre3-dev libhwloc-dev libcmocka-dev hostapd wpasupplicant tcpdump screen iw usbutils tshark libpcap-dev -y
-
-
-echo "${CYN}Installing MAC and Hostname Changer...${NC}"
-sudo apt -qq install macchanger -y
-sudo cp templates/hostnamechanger /usr/local/bin
-sudo cp templates/hostnamechanger.py /usr/local/bin
-sudo ln -s /usr/local/bin/hostnamechanger /etc/network/if-pre-up.d/hostnamechanger
-sudo chmod ugo+x /usr/local/bin/hostnamechanger
-sudo chmod ugo+x /etc/network/if-pre-up.d/hostnamechanger
-sudo /usr/local/bin/hostnamechanger
-
-appname=aircrack-ng # Amateur Radio Libraries
-git_check $wifidir/$appname https://github.com/aircrack-ng/aircrack-ng.git $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Preparing...${NC}"
-    # Install Start
-    ./configure --with-experimental --with-gcrypt --with-ext-scripts >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Compiling...${NC}"
-    make clean >> $logdir$appname.log 2>&1
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-appname=pixiewps
-git_check $wifidir/$appname https://github.com/wiire-a/pixiewps.git $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Preparing...${NC}"
-    # Install Start
-    echo -n "${CYN}Compiling...${NC}"
-    make clean >> $logdir$appname.log 2>&1
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-appname=reaver
-git_check $wifidir/$appname https://github.com/t6x/reaver-wps-fork-t6x $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Preparing...${NC}"
-    # Install Start
-    cd src
-    ./configure
-    echo -n "${CYN}Compiling...${NC}"
-    make clean >> $logdir$appname.log 2>&1
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-appname=bully
-git_check $wifidir/$appname https://github.com/aanarchyy/bully $appname
-if [ $? = 21 ]; then
-    cd src
-    echo -n "${CYN}Compiling...${NC}"
-    make clean >> $logdir$appname.log 2>&1
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-appname=cowpatty
-git_check $wifidir/$appname https://github.com/joswr1ght/cowpatty.git $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Compiling...${NC}"
-    make clean >> $logdir$appname.log 2>&1
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-appname=hashcat
-git_check $wifidir/$appname https://github.com/hashcat/hashcat.git $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Compiling...${NC}"
-    make clean >> $logdir$appname.log 2>&1
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-appname=hcxdumptool
-git_check $wifidir/$appname https://github.com/ZerBea/hcxdumptool.git $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Compiling...${NC}"
-    make clean >> $logdir$appname.log 2>&1
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-appname=hcxtools
-git_check $wifidir/$appname https://github.com/ZerBea/hcxtools.git $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Compiling...${NC}"
-    make clean >> $logdir$appname.log 2>&1
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-appname=wifite2
-git_check $wifidir/$appname https://github.com/derv82/wifite2.git $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "python3 setup.py install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
-
-
-echo "${CYN}Installing bing-ip2hosts...${NC}" 
-wget http://www.morningstarsecurity.com/downloads/bing-ip2hosts-0.4.tar.gz
-tar -xzvf bing-ip2hosts-0.4.tar.gz
-sudo cp bing-ip2hosts-0.4/bing-ip2hosts /usr/local/bin/
-sudo rm -r bing-ip2hosts-0.4
-sudo rm bing-ip2hosts-0.4.tar.gz
-
-echo "${CYN}Installing Lazy Air Crack...${NC}" 
-git clone https://github.com/3xploitGuy/lazyaircrack.git /opt/build/wifi-tools/lazyaircrack 1> /dev/null
-
-echo "${CYN}Installing Lazy Airgeddon...${NC}" 
-git clone --depth 1 https://github.com/v1s1t0r1sh3r3/airgeddon.git /opt/build/wifi-tools/airgeddon 1> /dev/null
-
-echo "${CYN}Installing Recon Cobra...${NC}" 
-git clone https://github.com/haroonawanofficial/ReconCobra.git /opt/build/sec-tools/reconcobra 1> /dev/null
-
-git clone https://github.com/threat9/routersploit.git
-cd routersploit
-python3 -m pip install -r requirements.txt

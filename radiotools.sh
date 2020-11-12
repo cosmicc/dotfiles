@@ -6,9 +6,9 @@ CYN='\033[1;36m'
 MGT='\033[1;35m'
 NC='\033[0m'
 
-radiodir=/opt/build/radioapps
-logdir=/opt/logs/
-logfile=/opt/logs/sdrtools.log
+radiodir=/opt/build/radiotools
+logdir=/opt/logs/radiotools/
+logfile=/opt/logs/radiotools.log
 attempts=5
 
 # compare files

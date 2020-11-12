@@ -115,7 +115,7 @@ fi
 count=1
 while [ $count -le $attempts ]; do
     echo "${CYN}Installing Essential System Packages (Attempt #$count)...${NC}"
-    sudo sh -c "apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server dos2unix ucommon-utils python3-gpiozero -y >> $logfile 2>&1"
+    sudo sh -c "apt -qq install pipenv neofetch pax p7zip-rar lm-sensors apt-transport-https ca-certificates isort curl software-properties-common openvpn libssl-dev libffi-dev nfs-common openssh-server dos2unix ucommon-utils python3-gpiozero tmux -y >> $logfile 2>&1"
     if [ $? -ne 0 ]; then
         if [ $count -eq $attempts ]; then
             echo "Critical Install Error! See: $logfile"
@@ -262,8 +262,24 @@ read answer
 if [ $answer = "y" ]; then 
     echo "${CYN}Installing Python Libraries...${NC}"
     sudo sh -c "apt-get -qq install python3-dev -y >> $logfile 2>&1"
-    sudo sh -c "pip3 install loguru gitpython wpa-supplicant python-wifi rf-info isort flake8 maidenhead pyserial gps configparser RPi.GPIO >> $logfile 2>&1"
+    sudo sh -c "pip3 install loguru gitpython wpa-supplicant python3-setuptools numpy python-wifi rf-info isort flake8 maidenhead pyserial gps configparser RPi.GPIO >> $logfile 2>&1"
 fi
+
+echo -n "${YEL}Install Python2.7 & Libraries (y/n)? ${NC}"
+read answer
+if [ $answer = "y" ]; then 
+    echo "${CYN}Installing Python 2.7 Libraries...${NC}"
+    sudo sh -c "apt-get -qq install python2-dev -y >> $logfile 2>&1"
+    sudo sh -c "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py >> $logfile 2>&1"
+    sudo sh -c "python2 get-pip.py >> $logfile 2>&1"
+    python2 get-pip.py >> $logfile 2>&1
+    sudo sh -c "rm -f get-pip.py >> $logfile 2>&1"
+    sudo cp /home/sdr/.local/bin/pip2 /usr/local/bin
+    sudo sh -c "python2 -m pip install numpy >> $logfile 2>&1"
+    sudo sh -c "python2 -m pip install tk >> $logfile 2>&1"
+
+fi
+
 
 echo -n "${YEL}Install Xubuntu-desktop (y/n)? ${NC}"
 read answer
