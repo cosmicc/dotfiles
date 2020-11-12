@@ -193,6 +193,24 @@ else
     sudo cp /opt/rpisetup/templates/rpi-config.txt /boot/firmware/config.txt -f
 fi
 
+COUNT=`cat /boot/firmware/config.txt | grep dtoverlay=disable-wifi | wc -l`
+if [ $COUNT -lt 1 ]; then
+    echo -n "${YEL}Disable Onboard RPi Wifi (y/n)? ${NC}"
+    read answer
+    if [ $answer = "y" ]; then
+        echo "dtoverlay=disable-wifi" >> /boot/firmware/config.txt
+    fi
+fi
+
+COUNT=`cat /boot/firmware/config.txt | grep dtoverlay=disable-bt | wc -l`
+if [ $COUNT -lt 1 ]; then
+    echo -n "${YEL}Disable Onboard RPi Bluetooth (y/n)? ${NC}"
+    read answer
+    if [ $answer = "y" ]; then
+        echo "dtoverlay=disable-bt" >> /boot/firmware/config.txt
+    fi
+fi
+
 SG=`sudo cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
 TH=`sudo cat /sys/devices/system/cpu/cpufreq/ondemand/up_threshold`
 echo "CPU Governor: $SG"
@@ -287,6 +305,19 @@ if [ $answer = "y" ]; then
     echo "${CYN}Restoring Xfce Settings...${NC}"
     mkdir -p ~/.config/xfce4/xfconf/xfce-perchannel-xml
     tar xvfz /opt/rpisetup/templates/settings.tar.gz -C ~/.config/xfce4/xfconf/xfce-perchannel-xml >> $logfile 2>&1
+fi
+
+echo -n "${YEL}Install TigerVNC Server (y/n)? ${NC}"
+read answer
+if [ $answer = "y" ]; then 
+    sudo sh -c "apt-get install tigervnc-scraping-server tigervnc-common >> $logfile 2>&1"
+    mkdir -p ~/.vnc
+    tigervncpasswd
+    git clone https://github.com/sebestyenistvan/runvncserver >> $logfile 2>&1
+    cp ~/runvncserver/startvnc ~
+    chmod +x ~/startvnc
+    ./startvnc start
+    echo "/home/$USERNAME/startvnc start >/dev/null 2>&1" >> ~/.xsessionrc
 fi
 
 echo -n "${YEL}Remove Games (y/n)? ${NC}"

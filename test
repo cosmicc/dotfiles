@@ -1,14 +1,17 @@
-cd $1
-LOCAL=`git rev-parse HEAD`
-REMOTE=`git ls-remote | grep HEAD`
-echo '-----'
-LOCAL2="${LOCAL##*$'\n'}"
-REMOTE2=`echo $REMOTE | cut -d' ' -f 1` 
-echo $LOCAL2
-echo $REMOTE2
-echo '-----'
-if [ $LOCAL2 = $REMOTE2 ]; then
-    echo "SAME"
-else
-    echo "DIFF"
-fi    
+COUNT=`cat /boot/firmware/config.txt | grep dtoverlay=disable-wifi | wc -l`
+if [ $COUNT -lt 1 ]; then
+    echo -n "${YEL}Disable Onboard RPi Wifi (y/n)? ${NC}"
+    read answer
+    if [ $answer = "y" ]; then
+        sudo sh -c 'echo "dtoverlay=disable-wifi" >> /boot/firmware/config.txt'
+    fi
+fi
+
+COUNT=`cat /boot/firmware/config.txt | grep dtoverlay=disable-bt | wc -l`
+if [ $COUNT -lt 1 ]; then
+    echo -n "${YEL}Disable Onboard RPi Bluetooth (y/n)? ${NC}"
+    read answer
+    if [ $answer = "y" ]; then
+        sudo sh -c 'echo "dtoverlay=disable-bt" >> /boot/firmware/config.txt'
+    fi
+fi

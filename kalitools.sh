@@ -1,6 +1,60 @@
+#!/bin/env sh
+
 YEL='\033[1;33m'
-CYN='\033[1;36m' 
+GRN='\033[1;32m'
+CYN='\033[1;36m'
+MGT='\033[1;35m'
 NC='\033[0m'
+
+wifidir=/opt/wifiapps
+logdir=/opt/logs
+logfile=/opt/logs/wifitools.log
+
+git_check () {
+    echo -n "${CYN}Checking ${MGT}$3${CYN}...${NC}"
+    if [ -d $1 ]; then
+        cd $1
+        LOCAL=`git rev-parse HEAD` > /dev/null 2>&1
+        REMOTE=`git ls-remote | grep HEAD` > /dev/null 2>&1
+        LOCAL2="${LOCAL##*$'\n'}" > /dev/null 2>&1
+        REMOTE2=`echo $REMOTE | cut -d' ' -f 1` > /dev/null 2>&1
+        if [ $LOCAL2 = $REMOTE2 ]; then
+            echo "${CYN}No Updates Available.${NC}"
+            return 58
+        else
+            echo -n "${YEL}New Version! Downloading...${NC}"
+            git pull >> $logfile 2>&1
+            return 21
+        fi
+    else
+        echo -n "${YEL}Does Not Exist! Downloading...${NC}"
+        mkdir -p $1
+        git clone $2 $1 >> $logfile 2>&1
+        cd $1
+        git config pull.rebase false
+        return 21
+    fi
+}
+
+echo "${YEL}Starting Wifi/Bluetooth Application Installer!${NC}"
+
+if [ ! -d $wifidir ]; then
+    echo "${MGT}Wifiapps Directory doesn't exist, creating.${NC}"
+    mkdir -p $wifidir
+fi
+
+if [ ! -d /opt/downloads ]; then
+    echo "${MGT}Downloads Directory doesn't exist, creating.${NC}"
+    mkdir -p /opt/downloads
+fi
+
+if [ ! -d $logdir ]; then
+    echo "${MGT}Log Directory doesn't exist, creating.${NC}"
+    mkdir -p $logdir 
+fi
+
+sudo chown sdr.sdr /opt/build -R
+touch $logfile
 
 echo -n "${YEL}Install Kali Repository (y/n)? ${NC}" 
 read answer
@@ -23,6 +77,10 @@ if [ $answer = "y" ]; then
     fi
 fi    
 
+echo "${CYN}Installing Tools Prerequisites...${NC}" 
+sudo apt -qq install net-tools libtool pkg-config libnl-3-dev libnl-genl-3-dev libssl-dev ethtool shtool rfkill zlib1g-dev libpcap-dev libsqlite3-dev libpcre3-dev libhwloc-dev libcmocka-dev hostapd wpasupplicant tcpdump screen iw usbutils tshark libpcap-dev -y
+
+
 echo "${CYN}Installing MAC and Hostname Changer...${NC}"
 sudo apt -qq install macchanger -y
 sudo cp templates/hostnamechanger /usr/local/bin
@@ -32,8 +90,167 @@ sudo chmod ugo+x /usr/local/bin/hostnamechanger
 sudo chmod ugo+x /etc/network/if-pre-up.d/hostnamechanger
 sudo /usr/local/bin/hostnamechanger
 
-echo "${CYN}Installing Wifite2...${NC}" 
-sudo apt -qq install wifite -y
+appname=aircrack-ng # Amateur Radio Libraries
+git_check $wifidir/$appname https://github.com/aircrack-ng/aircrack-ng.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    ./configure --with-experimental --with-gcrypt --with-ext-scripts >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make clean >> $logdir$appname.log 2>&1
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=pixiewps
+git_check $wifidir/$appname https://github.com/wiire-a/pixiewps.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    echo -n "${CYN}Compiling...${NC}"
+    make clean >> $logdir$appname.log 2>&1
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=reaver
+git_check $wifidir/$appname https://github.com/t6x/reaver-wps-fork-t6x $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    cd src
+    ./configure
+    echo -n "${CYN}Compiling...${NC}"
+    make clean >> $logdir$appname.log 2>&1
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=bully
+git_check $wifidir/$appname https://github.com/aanarchyy/bully $appname
+if [ $? = 21 ]; then
+    cd src
+    echo -n "${CYN}Compiling...${NC}"
+    make clean >> $logdir$appname.log 2>&1
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=cowpatty
+git_check $wifidir/$appname https://github.com/joswr1ght/cowpatty.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Compiling...${NC}"
+    make clean >> $logdir$appname.log 2>&1
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=hashcat
+git_check $wifidir/$appname https://github.com/hashcat/hashcat.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Compiling...${NC}"
+    make clean >> $logdir$appname.log 2>&1
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=hcxdumptool
+git_check $wifidir/$appname https://github.com/ZerBea/hcxdumptool.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Compiling...${NC}"
+    make clean >> $logdir$appname.log 2>&1
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=hcxtools
+git_check $wifidir/$appname https://github.com/ZerBea/hcxtools.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Compiling...${NC}"
+    make clean >> $logdir$appname.log 2>&1
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=wifite2
+git_check $wifidir/$appname https://github.com/derv82/wifite2.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "python3 setup.py install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+
 
 echo "${CYN}Installing bing-ip2hosts...${NC}" 
 wget http://www.morningstarsecurity.com/downloads/bing-ip2hosts-0.4.tar.gz

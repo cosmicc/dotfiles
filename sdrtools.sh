@@ -24,7 +24,6 @@ comp_files () {
     fi
 }
 
-
 # check_update dir giturl appname
 git_check () {
     echo -n "${CYN}Checking ${MGT}$3${CYN}...${NC}"
@@ -48,11 +47,13 @@ git_check () {
         git clone $2 $1 >> $logfile 2>&1
         cd $1
         git config pull.rebase false
+        if [ $3 = "gnuradio" ]; then
+            git checkout maint-3.8 >> $logfile 2>&1 
+            git submodule update --init --recursive >> $logfile 2>&1
+        fi
         return 21
     fi
 }
-
-
 
 echo "${YEL}Starting Amateur Radio Application Installer!${NC}"
 
@@ -89,7 +90,8 @@ echo "${GRN}Complete.${NC}"
 count=1
 echo "${CYN}Verifying & Installing Prerequisites (Attempt #$count)...${NC}"
 while [ $count -le $attempts ]; do
-    sudo sh -c "apt -qq install libfftw3-dev libusb-1.0-0-dev libusb-dev qt5-default qtbase5-dev qtchooser libqt5multimedia5-plugins qtmultimedia5-dev libqt5websockets5-dev qttools5-dev qttools5-dev-tools libqt5opengl5-dev qtbase5-dev libqt5quick5 qml-module-qtlocation  qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick-window2 qml-module-qtquick-dialogs qml-module-qtquick-controls qml-module-qtquick-layouts libqt5serialport5-dev qtdeclarative5-dev qtpositioning5-dev qtlocation5-dev libboost-all-dev libasound2-dev pulseaudio libopencv-dev libxml2-dev bison flex ffmpeg libavcodec-dev libavformat-dev libopus-dev doxygen graphviz libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev libqt5svg5-dev portaudio19-dev qt5-default gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev libsigc++-2.0-dev libpopt-dev libspeex-dev libopus-dev libgcrypt20-dev tcl tcl-dev sox libwxbase3.0-dev libwxgtk3.0-gtk3-dev libmotif-dev imagemagick gpsman libspeexdsp-dev openjdk-8-jre ax25-tools ax25-apps soundmodem libliquid2d libtinyxml2.6.2v5 jackd libncurses-dev libboost-dev libboost-date-time-dev libboost-system-dev libboost-filesystem-dev libboost-thread-dev libboost-chrono-dev libboost-serialization-dev liblog4cpp5-dev libuhd-dev libblas-dev liblapack-dev libarmadillo-dev libgflags-dev libgoogle-glog-dev libgnutls-openssl-dev libpcap-dev libmatio-dev libpugixml-dev libgtest-dev libprotobuf-dev protobuf-compiler python3-mako libwxgtk-webview3.0-gtk3-dev libgtk-3-dev libbz2-dev exif libarchive-dev libsndfile1-dev portaudio19-dev gettext sqlite3 libsqlite3-dev libcurl4-openssl-dev libtinyxml-dev libexif-dev liblzma-dev liblz4-dev libao-dev i2c-tools asciidoctor subversion texinfo asciidoc-base libjsoncpp-dev libi2c-dev libusb-1.0-0-dev gnuplot libsensors4-dev libfaad-dev libmpg123-dev libmpg123-dev libfftw3-dev librtlsdr-dev libusb-1.0-0-dev mesa-common-dev libglu1-mesa-dev libpulse-dev libairspy-dev libmp3lame-dev libliquid-dev swig gr-osmosdr libaudiofile-dev libgd-dev groff libax25-dev -y"
+    sudo sh -c "apt -qq install libfftw3-dev libusb-1.0-0-dev libusb-dev qt5-default qtbase5-dev qtchooser libqt5multimedia5-plugins qtmultimedia5-dev libqt5websockets5-dev qttools5-dev qttools5-dev-tools libqt5opengl5-dev qtbase5-dev libqt5quick5 qml-module-qtlocation  qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick-window2 qml-module-qtquick-dialogs qml-module-qtquick-controls qml-module-qtquick-layouts libqt5serialport5-dev qtdeclarative5-dev qtpositioning5-dev qtlocation5-dev libboost-all-dev libasound2-dev pulseaudio libopencv-dev libxml2-dev bison flex ffmpeg libavcodec-dev libavformat-dev libopus-dev doxygen graphviz libwxbase3.0-0v5 libwxgtk3.0-gtk3-0v5 python3-future python3-sip python3-wxgtk4.0 libfltk1.3-dev libpng-dev samplerate-programs libc6 libfltk-images1.3 libfltk1.3 libfltk1.3-dev libgcc1 libhamlib2 libhamlib-dev libpng-dev portaudio19-dev libportaudio2 libportaudiocpp0 libflxmlrpc1v5 libpulse0 libpulse-dev librpc-xml-perl libsamplerate0 libsamplerate0-dev libsndfile1 libsndfile1-dev libstdc++6 libx11-6 libterm-readline-gnu-perl gfortran libfftw3-dev qt5-qmake qtbase5-dev libqt5multimedia5 qtmultimedia5-dev libqt5serialport5 libqt5serialport5-dev qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libvolk2-bin gnuradio gnuradio-dev libqt5svg5-dev portaudio19-dev qt5-default gr-gsm pkg-config libglib2.0-dev libgtk-3-dev libgoocanvas-2.0-dev libtool intltool autoconf automake libcurl4-openssl-dev -y" 
+    sudo sh -c "apt -qq install libsigc++-2.0-dev libpopt-dev libspeex-dev libopus-dev libgcrypt20-dev tcl tcl-dev sox libwxbase3.0-dev libwxgtk3.0-gtk3-dev libmotif-dev imagemagick gpsman libspeexdsp-dev openjdk-8-jre ax25-tools ax25-apps soundmodem libliquid2d libtinyxml2.6.2v5 jackd libncurses-dev libboost-dev libboost-date-time-dev libboost-system-dev libboost-filesystem-dev libboost-thread-dev libboost-chrono-dev libboost-serialization-dev liblog4cpp5-dev libuhd-dev libblas-dev liblapack-dev libarmadillo-dev libgflags-dev libgoogle-glog-dev libgnutls-openssl-dev libpcap-dev libmatio-dev libpugixml-dev libgtest-dev libprotobuf-dev protobuf-compiler python3-mako libwxgtk-webview3.0-gtk3-dev libgtk-3-dev libbz2-dev exif libarchive-dev libsndfile1-dev portaudio19-dev gettext sqlite3 libsqlite3-dev libcurl4-openssl-dev libtinyxml-dev libexif-dev liblzma-dev liblz4-dev libao-dev i2c-tools asciidoctor subversion texinfo asciidoc-base libjsoncpp-dev libi2c-dev libusb-1.0-0-dev gnuplot libsensors4-dev libfaad-dev libmpg123-dev libmpg123-dev libfftw3-dev librtlsdr-dev libusb-1.0-0-dev mesa-common-dev libglu1-mesa-dev libpulse-dev libairspy-dev libmp3lame-dev libliquid-dev swig gr-osmosdr libaudiofile-dev libgd-dev groff libax25-dev libboost-all-dev libgmp-dev swig python3-numpy python3-mako python3-sphinx python3-lxml doxygen libfftw3-dev libsdl1.2-dev libgsl-dev libqwt-qt5-dev libqt5opengl5-dev python3-pyqt5 liblog4cpp5-dev libzmq3-dev python3-yaml python3-click python3-click-plugins python3-zmq python3-scipy python3-gi python3-gi-cairo gobject-introspection gir1.2-gtk-3.0 pybind11-dev python3-matplotlib libsndfile1-dev dkms -y"
     if [ $? -ne 0 ]; then
         ((count=count+1))
     else
@@ -108,7 +110,6 @@ while [ $count -lt $attempts ]; do
     fi
 done
 echo "${GRN}Complete.${NC}"
-
 
 echo -n "${YEL}Install & Setup RPi Hardware Clock (y/n)? ${NC}"
 read answer
@@ -155,11 +156,13 @@ if [ $answer = "y" ]; then
     sudo sh -c "apt -qq install ntp pps-tools -y >> $logfile 2>&1"
     sudo sh -c 'echo "pps-gpio" > /etc/modules'
     sudo cp /opt/rpisetup/templates/ntp.conf /etc/ntp.conf -f
+    sudo rm /etc/dhcp/dhclient-exit-hooks.d/ntp
     sudo systemctl restart ntp
 fi
 
 ###### APT PACKAGE INSTALLS ######
 
+count=1
 echo -n "${CYN}Installing Antenna & Signal Propigation Packages (Attempt #$count)...${NC}"
 while [ $count -lt $attempts ]; do
     sudo sh -c "apt -qq install antennavis gsmc nec2c xnec2c xnecview yagiuda splat -y >> $logfile 2>&1"
@@ -171,9 +174,10 @@ while [ $count -lt $attempts ]; do
 done
 echo "${GRN}Complete.${NC}"
 
+count=1
 echo -n "${CYN}Installing CW Packages (Attempt #$count)...${NC}"
 while [ $count -lt $attempts ]; do
-    sudo sh -c "apt -qq install xdemorse libcw6 cw cwcp xcwcp morse morse-x aldo glfr extra-xdg-menus qrq morse2ascii -y >> $logfile 2>&1"
+    sudo sh -c "apt -qq install xdemorse libcw6 cw cwcp xcwcp morse morse-x aldo extra-xdg-menus qrq morse2ascii -y >> $logfile 2>&1"
     if [ $? -ne 0 ]; then
         ((count=count+1))
     else
@@ -182,6 +186,7 @@ while [ $count -lt $attempts ]; do
 done
 echo "${GRN}Complete.${NC}"
 
+count=1
 echo -n "${CYN}Installing Radio Logging Packages (Attempt #$count)...${NC}"
 while [ $count -lt $attempts ]; do
     sudo sh -c "apt -qq install wwl xlog xdx tlf klog -y >> $logfile 2>&1"
@@ -193,14 +198,11 @@ while [ $count -lt $attempts ]; do
 done
 echo "${GRN}Complete.${NC}"
 
-
-
-
 ###### PYTHON3 INSTALLS ######
 
 echo -n "${CYN}Installing Python Prerequisites...${NC}"
 sudo sh -c "ln -s /usr/bin/python3 /usr/bin/python >> $logfile 2>&1"
-sudo sh -c "pip3 install bitstring libusb numpy cython matplotlib >> $logfile 2>&1"
+sudo sh -c "pip3 install bitstring libusb numpy cython matplotlib Cheetah3 >> $logfile 2>&1"
 echo "${GRN}Complete.${NC}"
 
 echo -n "${CYN}Installing Universal Radio Hacker...${NC}"
@@ -229,7 +231,6 @@ if [ $? = 21 ]; then
         sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
     fi    
 fi
-
 
 appname=soapysdr # API and runtime library for interfacing with SDR devices
 git_check $radiodir/$appname https://github.com/pothosware/SoapySDR.git $appname
@@ -274,7 +275,6 @@ if [ $? = 21 ]; then
         sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
     fi    
 fi
-
 
 appname=limesuite # Lime SDR Libraries & Programs
 git_check $radiodir/$appname https://github.com/myriadrf/LimeSuite.git $appname
@@ -392,6 +392,559 @@ if [ $? = 21 ]; then
     fi    
 fi
 
+appname=volk # Preq for GNU Radio
+git_check $radiodir/$appname https://github.com/gnuradio/volk.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_EXECUTABLE=/usr/bin/python3 ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+######### GNURADIO START #############
+appname=gnuradio # GNU Radio
+git_check $radiodir/$appname/$appname https://github.com/gnuradio/gnuradio.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build 
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_EXECUTABLE=/usr/bin/python3 ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-rtlsdr # GNU radio RTL-SDR Plugin
+git_check $radiodir/gnuradio/$appname git://git.osmocom.org/gr-osmosdr $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake -DINSTALL_UDEV_RULES=ON ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+        sudo sh -c "make install-udev-rules >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-limesdr # GNU radio LimeSDR Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/myriadrf/gr-limesdr.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-satellite # GNU radio Satellite Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/daniestevez/gr-satellites.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-lora # GNU radio Lora Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/tapparelj/gr-lora_sdr.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-bluetooth # GNU radio Bluetooth Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/greatscottgadgets/gr-bluetooth.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-dsd # GNU radio Digital Speech Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/argilo/gr-dsd.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-tempest # GNU radio video eavesdropping Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/git-artes/gr-tempest.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-dab # GNU radio Digital Audio Brodcasting Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/andrmuel/gr-dab.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-nrsc5 # GNU radio HD Radio Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/argilo/gr-nrsc5.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-packetradio # GNU radio Packet Radio Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/sx3wiz/gr-packetradio.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-pocsag # GNU radio Pocsag Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/saki92/gr-pocsag.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=gr-linrad # GNU radio Linrad Plugin
+git_check $radiodir/gnuradio/$appname https://github.com/daniestevez/gr-linrad.git $appname gnuradio
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi    
+    mkdir build && cd build
+    cmake ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+########## GNURADIO END ############
+
+########## SDRANGEL START ##########
+appname=cm265cc # SDRAngel Prereq
+git_check $radiodir/sdrangel/$appname https://github.com/f4exb/cm256cc.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    git reset --hard c0e92b92aca3d1d36c990b642b937c64d363c559 >> $logdir$appname.log 2>&1
+    mkdir build && cd build
+    cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/installs/$appname ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=mbelib # SDRAngel Prereq
+git_check $radiodir/sdrangel/$appname https://github.com/szechyjs/mbelib.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    git reset --hard 9a04ed5c78176a9965f3d43f7aa1b1f5330e771f >> $logdir$appname.log 2>&1
+    mkdir build && cd build
+    cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/installs/$appname ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=serialdv # SDRAngel Prereq
+git_check $radiodir/sdrangel/$appname https://github.com/f4exb/serialDV.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    git reset --hard "v1.1.4" >> $logdir$appname.log 2>&1
+    mkdir build && cd build
+    cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/installs/$appname ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=dsdcc # SDRAngel Prereq
+git_check $radiodir/sdrangel/$appname https://github.com/f4exb/dsdcc.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    git reset --hard "v1.9.0" >> $logdir$appname.log 2>&1
+    mkdir build && cd build
+    cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/installs/$appname -DUSE_MBELIB=ON -DLIBMBE_INCLUDE_DIR=$radiodir/sdrangel/installs/mbelib/include -DLIBMBE_LIBRARY=$radiodir/sdrangel/installs/mbelib/lib/libmbe.so -DLIBSERIALDV_INCLUDE_DIR=$radiodir/sdrangel/installs/serialdv/include/serialdv -DLIBSERIALDV_LIBRARY=$radiodir/sdrangel/installs/serialdv/lib/libserialdv.so ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=codec2 # SDRAngel Prereq
+git_check $radiodir/sdrangel/$appname https://github.com/drowe67/codec2.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    git reset --hard 76a20416d715ee06f8b36a9953506876689a3bd2 >> $logdir$appname.log 2>&1
+    mkdir build && cd build
+    cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/installs/$appname ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=librtlsdr # SDRAngel Prereq
+git_check $radiodir/sdrangel/$appname https://github.com/osmocom/rtl-sdr.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    git reset --hard be1d1206bfb6e6c41f7d91b20b77e20f929fa6a7 >> $logdir$appname.log 2>&1
+    mkdir build && cd build
+    cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/installs/$appname -DDETACH_KERNEL_DRIVER=ON ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=limesdr # SDRAngel Prereq
+git_check $radiodir/sdrangel/$appname https://github.com/myriadrf/LimeSuite.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    git reset --hard "v20.01.0" >> $logdir$appname.log 2>&1
+    mkdir build && cd build
+    cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/installs/$appname ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=xtrx # SDRAngel Prereq
+git_check $radiodir/sdrangel/$appname https://github.com/f4exb/images.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    git submodule init
+    git submodule update
+    cd sources
+    mkdir build && cd build
+    cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/installs/$appname -DENABLE_SOAPY=NO ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=sdrangel # SDRAngel
+git_check $radiodir/sdrangel/$appname https://github.com/f4exb/sdrangel.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Preparing...${NC}"
+    # Install Start
+    if [ -d $radiodir/$appname/build ]; then
+        rm -rf $radiodir/$appname/build
+    fi
+    mkdir build && cd build
+    cmake -Wno-dev -DDEBUG_OUTPUT=ON -DRX_SAMPLE_24BIT=ON \
+-DRTLSDR_DIR=/$radiodir/sdrangel/installslibrtlsdr \
+-DLIMESUITE_DIR=/$radiodir/sdrangel/installs/limesdr \
+-DXTRX_DIR=$radiodir/sdrangel/installs/xtrx \
+-DCM256CC_DIR=$radiodir/sdrangel/installs/cm256cc \
+-DDSDCC_DIR=$radiodir/sdrangel/installs/dsdcc \
+-DSERIALDV_DIR=$radiodir/sdrangel/installs/serialdv \
+-DMBE_DIR=$radiodir/sdrangel/installs/mbelib \
+-DCODEC2_DIR=$radiodir/sdrangel/installs/codec2 \
+-DCMAKE_INSTALL_PREFIX=$radiodir/sdrangel/sdrangel ../ >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Compiling...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+########## SDRANGEL END ################
 
 appname=wxWidgets # Preq for CubisSDR
 if [ ! -d /usr/lib/wxWidgets-staticlib ]; then
@@ -403,8 +956,8 @@ if [ ! -d /usr/lib/wxWidgets-staticlib ]; then
     cd wxWidgets-3.1.3/
     sudo mkdir -p /usr/lib/wxWidgets-staticlib
     echo -n "${CYN}Preparing...${NC}"
-    ./autogen.sh
-    ./configure --with-opengl --disable-shared --enable-monolithic --with-libjpeg --with-libtiff --with-libpng --with-zlib --disable-sdltest --enable-unicode --enable-display --enable-propgrid --disable-webkit --disable-webview --disable-webviewwebkit --prefix=`echo /usr/lib/wxWidgets-staticlib` CXXFLAGS="-std=c++0x"
+    ./autogen.sh >> $logdir$appname.log 2>&1
+    ./configure --with-opengl --disable-shared --enable-monolithic --with-libjpeg --with-libtiff --with-libpng --with-zlib --disable-sdltest --enable-unicode --enable-display --enable-propgrid --disable-webkit --disable-webview --disable-webviewwebkit --prefix=`echo /usr/lib/wxWidgets-staticlib` CXXFLAGS="-std=c++0x" >> $logdir$appname.log 2>&1
     echo -n "${CYN}Compiling...${NC}"
     make -j4 >> $logdir$appname.log 2>&1
     echo -n "${CYN}Installing...${NC}"
@@ -440,37 +993,13 @@ if [ $? = 21 ]; then
     fi    
 fi
 
-appname=gr-rtlsdr # GNU radio RTL-SDR Plugin
-git_check $radiodir/$appname git://git.osmocom.org/gr-osmosdr $appname
-if [ $? = 21 ]; then
-    echo -n "${CYN}Preparing...${NC}"
-    # Install Start
-    if [ -d $radiodir/$appname/build ]; then
-        rm -rf $radiodir/$appname/build
-    fi    
-    mkdir build && cd build
-    cmake -DINSTALL_UDEV_RULES=ON ../ >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Compiling...${NC}"
-    make -j4 >> $logdir$appname.log 2>&1
-    echo -n "${CYN}Installing...${NC}"
-    sudo sh -c "make install >> $logdir$appname.log 2>&1"
-    # Install End
-    if [ $? -ne 0 ]; then
-        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
-    else    
-        echo "${GRN}Complete.${NC}"
-        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
-        sudo sh -c "make install-udev-rules >> $logdir$appname.log 2>&1"
-    fi    
-fi
-
 appname=hamfax # Fax over RF
 git_check $radiodir/$appname https://github.com/AlexandriaOL/hamfax-qt5.git $appname
 if [ $? = 21 ]; then
     echo -n "${CYN}Preparing...${NC}"
     # Install Start
-    autoreconf -f -i
-    ./configure
+    autoreconf -f -i >> $logdir$appname.log 2>&1
+    ./configure >> $logdir$appname.log 2>&1
     echo -n "${CYN}Compiling...${NC}"
     make -j4 >> $logdir$appname.log 2>&1
     echo -n "${CYN}Installing...${NC}"
@@ -489,8 +1018,8 @@ git_check $radiodir/$appname https://github.com/n2ygk/aprsdigi.git $appname
 if [ $? = 21 ]; then
     echo -n "${CYN}Preparing...${NC}"
     # Install Start
-    autoreconf -f -i
-    ./configure
+    autoreconf -f -i >> $logdir$appname.log 2>&1
+    ./configure >> $logdir$appname.log 2>&1
     echo -n "${CYN}Compiling...${NC}"
     make -j4 >> $logdir$appname.log 2>&1
     echo -n "${CYN}Installing...${NC}"
