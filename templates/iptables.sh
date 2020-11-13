@@ -21,9 +21,9 @@ iptables -A INPUT -j LOG
 iptables -A FORWARD -j LOG
 
 # OUTPUT
-iptables -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m conntrack --cstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p udp -m conntrack --cstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p icmp -m conntrack --cstate NEW,ESTABLISHED -j ACCEPT
 
 # INPUT
 
@@ -31,7 +31,7 @@ iptables -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -i lo -p all -j ACCEPT
 
 # Allow three-way Handshake
-iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -m conntrack --cstate ESTABLISHED,RELATED -j ACCEPT
 
 # Stop Masked Attackes
 iptables -A INPUT -p icmp --icmp-type 13 -j DROP
@@ -40,9 +40,9 @@ iptables -A INPUT -p icmp --icmp-type 14 -j DROP
 iptables -A INPUT -p icmp -m limit --limit 1/second -j ACCEPT
 
 # Discard invalid Packets
-iptables -A INPUT -m state --state INVALID -j DROP
-iptables -A FORWARD -m state --state INVALID -j DROP
-iptables -A OUTPUT -m state --state INVALID -j DROP
+iptables -A INPUT -m conntrack --cstate INVALID -j DROP
+iptables -A FORWARD -m conntrack --cstate INVALID -j DROP
+iptables -A OUTPUT -m conntrack --cstate INVALID -j DROP
 
 ### Drop Spoofing attacks
 iptables -A INPUT -s 10.0.0.0/8 -j DROP
@@ -79,11 +79,11 @@ iptables -A FORWARD -p tcp -m tcp --dport 139 -m recent --name portscan --set -j
 # Inbound Rules
 
 # Web 8090
-iptables -A INPUT -p tcp --dport 8090 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -p tcp --dport 8090 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 8090 -m state --state NEW,ESTABLISHED -j ACCEPT
+# iptables -A INPUT -p tcp --dport 8090 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
 
 # ssh & sftp
-iptables -A INPUT -p tcp --dport 372 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --dport 372 -m conntrack --cstate NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp --dport 372 -m limit --limit 25/minute --limit-burst 100 -j ACCEPT
 
 # Ping

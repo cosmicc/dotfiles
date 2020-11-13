@@ -10,6 +10,7 @@ radiodir=/opt/build/radiotools
 logdir=/opt/logs/radiotools/
 logfile=/opt/logs/radiotools.log
 attempts=5
+FAILED=0
 
 # compare files
 comp_files () {
@@ -226,6 +227,8 @@ if [ $? = 21 ]; then
     # Install End
     if [ $? -ne 0 ]; then
         echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+        
+        ((FAILED=FAILED+1))
     else    
         echo "${GRN}Complete.${NC}"
         sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"

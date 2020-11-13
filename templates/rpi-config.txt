@@ -35,7 +35,8 @@ disable_overscan=1
 # If you have issues with audio, you may try uncommenting the following line
 # which forces the HDMI output into HDMI mode instead of DVI (which doesn't
 # support audio output)
-#hdmi_drive=2
+hdmi_force_hotplug=1
+hdmi_drive=2
 
 # If you have a CM4, uncomment the following line to enable the USB2 outputs
 # on the IO board (assuming your CM4 is plugged into such a board)

@@ -77,7 +77,7 @@ touch $logdir$failedlog
 echo "${CYN}Installing Wifi Tools Prerequisites...${NC}" 
 sudo sh -c "apt -qq install net-tools libtool pkg-config libnl-3-dev libnl-genl-3-dev libssl-dev ethtool shtool rfkill zlib1g-dev libpcap-dev libsqlite3-dev libpcre3-dev libhwloc-dev libcmocka-dev hostapd wpasupplicant tcpdump screen iw usbutils tshark libpcap-dev ettercap-graphical lighttpd crunch ieee-data dsniff ccze mdk4 libglib2.0-dev libnetfilter-queue-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev libsmpeg-dev subversion libportmidi-dev ffmpeg libswscale-dev libavformat-dev libavcodec-dev -y >> $logfile 2>&1"
 
-sudo sh -c "apt -qq install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libfreetype6-dev libportmidi-dev build-dep libsdl2 libsdl2-image libsdl2-mixer libsdl2-ttf libfreetype6 python3 libportmidi0 libxml2-dev libxslt-dev python-tk -y >> $logfile 2>&1"
+sudo sh -c "apt -qq install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libfreetype6-dev libportmidi-dev build-dep libsdl2 libsdl2-image libsdl2-mixer libsdl2-ttf libfreetype6 python3 libportmidi0 libxml2-dev libxslt-dev python-tk bluetooth bluez libbluetooth-dev libudev-dev -y >> $logfile 2>&1"
 
 echo "${CYN}Installing MAC and Hostname Changer...${NC}"
 sudo sh -c "apt -qq install macchanger -y"
@@ -468,6 +468,40 @@ if [ $? = 21 ]; then
         sudo sh -c "chmod +x /usr/local/bin/peniot"
     fi    
 fi
+
+appname=btlejack
+git_check $wifidir/$appname https://github.com/virtualabs/btlejack.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Installing...${NC}"
+    sudo sh -c "python3 setup.py install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+        echo $appname\n >> $logdir$failedlog
+        ((FAILED=FAILED+1))
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
+appname=crackle
+git_check $wifidir/$appname https://github.com/mikeryan/crackle.git $appname
+if [ $? = 21 ]; then
+    echo -n "${CYN}Installing...${NC}"
+    make -j4 >> $logdir$appname.log 2>&1
+    sudo sh -c "make install >> $logdir$appname.log 2>&1"
+    # Install End
+    if [ $? -ne 0 ]; then
+        echo "${MGT}Install Error! Check $logdir$appname.log${NC}"
+        echo $appname\n >> $logdir$failedlog
+        ((FAILED=FAILED+1))
+    else    
+        echo "${GRN}Complete.${NC}"
+        sudo sh -c "ldconfig >> $logdir$appname.log 2>&1"
+    fi    
+fi
+
 
 if [ $FAILED -gt 0 ]; then
    echo "${MGT}$FAILED installs failed${NC}"
